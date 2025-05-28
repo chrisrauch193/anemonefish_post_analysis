@@ -1,0 +1,10 @@
+"filename","mean_AUC_test_CV","sd_AUC_test_CV"
+"CV_Results_Entacmaea_quadricolor.csv",0.76,0.019
+"CV_Results_Macrodactyla_doreensis.csv",0.771,0.024
+"CV_Results_Radianthus_aurora.csv",0.76,0.017
+"CV_Results_Radianthus_crispa.csv",0.836,0.013
+"CV_Results_Radianthus_magnifica.csv",0.777,0.022
+"CV_Results_Radianthus_malu.csv",Inf,NA
+"CV_Results_Stichodactyla_gigantea.csv",0.611,0.032
+"CV_Results_Stichodactyla_haddoni.csv",0.723,0.017
+"CV_Results_Stichodactyla_mertensii.csv",0.791,0.018
