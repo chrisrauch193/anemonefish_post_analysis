@@ -1,0 +1,18 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:43:21,anemone,Entacmaea_quadricolor,_pca,0.7609,0.501,0.749,NA,26311.23
+2025-05-28 04:07:30,anemone,Entacmaea_quadricolor,_pca,0.8349,0.5606,0.7724,NA,24581.77
+2025-05-28 04:31:36,anemone,Entacmaea_quadricolor,_pca,0.841,0.5706,0.7857,NA,23794.52
+2025-05-28 05:37:12,anemone,Entacmaea_quadricolor,_pca,0.8363,0.537,0.7497,NA,24691.04
+2025-05-28 06:01:25,anemone,Entacmaea_quadricolor,_pca,0.8338,0.5359,0.7721,NA,24608.35
+2025-05-28 06:24:55,anemone,Entacmaea_quadricolor,_pca,0.8359,0.5564,0.7652,NA,23575.03
+2025-05-28 06:46:53,anemone,Entacmaea_quadricolor,_pca,0.8442,0.5872,0.7554,NA,23600.77
+2025-05-28 07:08:38,anemone,Entacmaea_quadricolor,_pca,0.7579,0.4966,0.7251,NA,26327.38
+2025-05-28 07:31:27,anemone,Entacmaea_quadricolor,_pca,0.8309,0.5368,0.7475,NA,24655.18
+2025-05-28 07:55:22,anemone,Entacmaea_quadricolor,_pca,0.8392,0.5773,0.7674,NA,23924.95
+2025-05-28 08:18:13,anemone,Entacmaea_quadricolor,_pca,0.7556,0.4887,0.723,NA,26336.98
+2025-05-28 08:42:31,anemone,Entacmaea_quadricolor,_pca,0.8306,0.5596,0.7658,NA,24296.01
+2025-05-28 09:27:36,anemone,Entacmaea_quadricolor,_pca,0.8292,0.5372,0.7399,NA,24691.5
+2025-05-28 10:14:35,anemone,Entacmaea_quadricolor,_pca,0.839,0.5546,0.7743,NA,24500.09
+2025-05-28 10:37:27,anemone,Entacmaea_quadricolor,_pca,0.833,0.5565,0.7791,NA,24354.5
+2025-05-28 11:01:18,anemone,Entacmaea_quadricolor,_pca,0.837,0.5831,0.7692,NA,24035.33
+2025-05-28 11:24:47,anemone,Entacmaea_quadricolor,_pca,0.8307,0.5501,0.7864,NA,24267.76

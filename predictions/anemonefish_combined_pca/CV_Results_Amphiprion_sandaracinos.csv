@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 04:00:53,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8923,0.6923,0.7847,NA,3447.28
+2025-05-28 04:23:57,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8996,0.7054,0.8792,NA,3454.58
+2025-05-28 04:47:15,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8819,0.6615,0.7945,NA,3437.9
+2025-05-28 05:09:52,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8952,0.6892,0.8304,NA,3389.6
+2025-05-28 05:31:16,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8851,0.6659,0.8918,NA,3447.9
+2025-05-28 05:54:26,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.9049,0.6967,0.8631,NA,4830.22
+2025-05-28 06:17:53,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8885,0.6825,0.7847,NA,3744.72
+2025-05-28 06:41:11,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.896,0.7006,0.8843,NA,3883.18
+2025-05-28 07:02:31,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8806,0.6745,0.8411,NA,3439.41
+2025-05-28 07:24:29,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.9016,0.699,0.9038,NA,3370.92
+2025-05-28 07:48:44,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8997,0.6933,0.8682,NA,3386.65
+2025-05-28 08:11:32,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.9038,0.7092,0.8827,NA,3361.85
+2025-05-28 08:36:08,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.9,0.6909,0.9105,NA,3396.52
+2025-05-28 08:58:29,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8934,0.6925,0.8464,NA,3385.11
+2025-05-28 09:21:35,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8795,0.6528,0.7675,NA,3440.26
+2025-05-28 09:44:59,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8989,0.7059,0.7943,NA,3440.62
+2025-05-28 10:07:57,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8872,0.6757,0.7732,NA,3397.51
+2025-05-28 10:30:38,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8787,0.6644,0.8795,NA,3434.78
+2025-05-28 10:54:16,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.8735,0.6413,0.7903,NA,3437.21
+2025-05-28 11:17:57,anemonefish,Amphiprion_sandaracinos,_combined_pca,0.9097,0.7074,0.8345,NA,3360.15

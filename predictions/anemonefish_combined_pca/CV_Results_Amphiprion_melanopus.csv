@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 04:04:28,anemonefish,Amphiprion_melanopus,_combined_pca,0.9264,0.7543,0.8986,NA,24121.22
+2025-05-28 04:28:18,anemonefish,Amphiprion_melanopus,_combined_pca,0.9383,0.7778,0.8758,NA,23664.18
+2025-05-28 04:50:35,anemonefish,Amphiprion_melanopus,_combined_pca,0.926,0.759,0.8827,NA,24108.18
+2025-05-28 05:13:07,anemonefish,Amphiprion_melanopus,_combined_pca,0.9291,0.7704,0.8805,NA,23958.37
+2025-05-28 05:34:11,anemonefish,Amphiprion_melanopus,_combined_pca,0.9233,0.7497,0.8726,NA,24257.84
+2025-05-28 05:57:56,anemonefish,Amphiprion_melanopus,_combined_pca,0.9455,0.7878,0.8673,NA,23473.27
+2025-05-28 06:22:07,anemonefish,Amphiprion_melanopus,_combined_pca,0.9474,0.7896,0.8841,NA,23416.91
+2025-05-28 06:43:50,anemonefish,Amphiprion_melanopus,_combined_pca,0.9272,0.7618,0.8714,NA,23993.87
+2025-05-28 07:05:47,anemonefish,Amphiprion_melanopus,_combined_pca,0.9178,0.7321,0.879,NA,24257.22
+2025-05-28 07:28:11,anemonefish,Amphiprion_melanopus,_combined_pca,0.9186,0.7431,0.8829,NA,24278.47
+2025-05-28 07:52:07,anemonefish,Amphiprion_melanopus,_combined_pca,0.9327,0.7735,0.8807,NA,23809.61
+2025-05-28 08:14:48,anemonefish,Amphiprion_melanopus,_combined_pca,0.9309,0.7698,0.8793,NA,24197.51
+2025-05-28 08:39:38,anemonefish,Amphiprion_melanopus,_combined_pca,0.9282,0.7677,0.8709,NA,24095.97
+2025-05-28 09:02:08,anemonefish,Amphiprion_melanopus,_combined_pca,0.9397,0.782,0.8925,NA,23285.31
+2025-05-28 09:24:45,anemonefish,Amphiprion_melanopus,_combined_pca,0.9351,0.7722,0.9013,NA,23942.33
+2025-05-28 09:48:20,anemonefish,Amphiprion_melanopus,_combined_pca,0.9449,0.7842,0.8754,NA,23875.8
+2025-05-28 10:11:14,anemonefish,Amphiprion_melanopus,_combined_pca,0.9403,0.7838,0.8707,NA,23728.35
+2025-05-28 10:34:28,anemonefish,Amphiprion_melanopus,_combined_pca,0.8805,0.6958,0.8881,NA,25977.64
+2025-05-28 10:57:47,anemonefish,Amphiprion_melanopus,_combined_pca,0.9309,0.7449,0.8674,NA,23956.43
+2025-05-28 11:21:39,anemonefish,Amphiprion_melanopus,_combined_pca,0.9374,0.7723,0.8714,NA,23801.52

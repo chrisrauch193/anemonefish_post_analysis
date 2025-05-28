@@ -1,0 +1,10 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:49:01,anemonefish,Amphiprion_allardi,_pca,0.9618,0.8699,0.9234,NA,4311.11
+2025-05-28 04:12:47,anemonefish,Amphiprion_allardi,_pca,0.9699,0.8669,0.9528,NA,4117.86
+2025-05-28 05:42:07,anemonefish,Amphiprion_allardi,_pca,0.967,0.8782,0.9379,NA,4260.16
+2025-05-28 06:06:12,anemonefish,Amphiprion_allardi,_pca,0.9639,0.8762,0.9477,NA,4309.3
+2025-05-28 06:52:05,anemonefish,Amphiprion_allardi,_pca,0.9678,0.8767,0.9639,NA,4271.86
+2025-05-28 07:36:30,anemonefish,Amphiprion_allardi,_pca,0.9394,0.7558,0.9379,NA,4540.35
+2025-05-28 08:23:33,anemonefish,Amphiprion_allardi,_pca,0.9663,0.8731,0.9525,NA,4244.76
+2025-05-28 10:19:06,anemonefish,Amphiprion_allardi,_pca,0.9473,0.8039,0.9472,NA,4460.71
+2025-05-28 10:42:37,anemonefish,Amphiprion_allardi,_pca,0.9644,0.8728,0.9527,NA,4274.78

@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:55:44,anemonefish,Amphiprion_melanopus,_biotic_only,0.8688,0.6378,0.8882,NA,25571.39
+2025-05-28 04:19:36,anemonefish,Amphiprion_melanopus,_biotic_only,0.8026,0.4809,0.8731,NA,26419.76
+2025-05-28 04:42:48,anemonefish,Amphiprion_melanopus,_biotic_only,0.8725,0.6734,0.8461,NA,25424.25
+2025-05-28 05:05:28,anemonefish,Amphiprion_melanopus,_biotic_only,0.8577,0.6292,0.882,NA,26264.06
+2025-05-28 05:27:42,anemonefish,Amphiprion_melanopus,_biotic_only,0.8514,0.5931,0.8594,NA,26342.87
+2025-05-28 05:49:26,anemonefish,Amphiprion_melanopus,_biotic_only,0.8508,0.5864,0.8221,NA,25803.47
+2025-05-28 06:13:17,anemonefish,Amphiprion_melanopus,_biotic_only,0.8276,0.5524,0.8292,NA,26474.57
+2025-05-28 06:36:43,anemonefish,Amphiprion_melanopus,_biotic_only,0.8506,0.619,0.8392,NA,26339.37
+2025-05-28 06:58:36,anemonefish,Amphiprion_melanopus,_biotic_only,0.8632,0.6657,0.8502,NA,26316.71
+2025-05-28 07:19:51,anemonefish,Amphiprion_melanopus,_biotic_only,0.8657,0.6653,0.8822,NA,26254.75
+2025-05-28 07:43:39,anemonefish,Amphiprion_melanopus,_biotic_only,0.8381,0.6142,0.8272,NA,26542.38
+2025-05-28 08:07:06,anemonefish,Amphiprion_melanopus,_biotic_only,0.8447,0.6116,0.8373,NA,26555.9
+2025-05-28 08:30:45,anemonefish,Amphiprion_melanopus,_biotic_only,0.8671,0.6662,0.8516,NA,26312.19
+2025-05-28 08:53:57,anemonefish,Amphiprion_melanopus,_biotic_only,0.8413,0.5983,0.8734,NA,26464.97
+2025-05-28 09:17:01,anemonefish,Amphiprion_melanopus,_biotic_only,0.8648,0.6385,0.8715,NA,25547.87
+2025-05-28 09:40:12,anemonefish,Amphiprion_melanopus,_biotic_only,0.8398,0.573,0.8543,NA,26385.63
+2025-05-28 10:03:21,anemonefish,Amphiprion_melanopus,_biotic_only,0.8474,0.6074,0.8296,NA,25849.14
+2025-05-28 10:26:02,anemonefish,Amphiprion_melanopus,_biotic_only,0.854,0.6056,0.8715,NA,25502
+2025-05-28 10:49:52,anemonefish,Amphiprion_melanopus,_biotic_only,0.8127,0.5222,0.8228,NA,26600.06
+2025-05-28 11:13:03,anemonefish,Amphiprion_melanopus,_biotic_only,0.7929,0.4971,0.8664,NA,26691.67

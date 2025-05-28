@@ -1,0 +1,19 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:51:31,anemonefish,Premnas_biaculeatus,_pca,0.8276,0.5155,0.7754,NA,11939.01
+2025-05-28 04:15:44,anemonefish,Premnas_biaculeatus,_pca,0.8351,0.543,0.8446,NA,12002.38
+2025-05-28 05:01:38,anemonefish,Premnas_biaculeatus,_pca,0.8805,0.6686,0.8395,NA,11566.56
+2025-05-28 05:23:28,anemonefish,Premnas_biaculeatus,_pca,0.8772,0.6683,0.8496,NA,11622.04
+2025-05-28 05:45:08,anemonefish,Premnas_biaculeatus,_pca,0.8788,0.6587,0.8192,NA,11593.6
+2025-05-28 06:09:02,anemonefish,Premnas_biaculeatus,_pca,0.8837,0.675,0.8318,NA,11453.33
+2025-05-28 06:32:34,anemonefish,Premnas_biaculeatus,_pca,0.8981,0.6896,0.822,NA,12490.38
+2025-05-28 06:54:41,anemonefish,Premnas_biaculeatus,_pca,0.8947,0.6662,0.8337,NA,11346.28
+2025-05-28 07:39:23,anemonefish,Premnas_biaculeatus,_pca,0.875,0.6537,0.8199,NA,11633.7
+2025-05-28 08:03:05,anemonefish,Premnas_biaculeatus,_pca,0.8862,0.6804,0.7945,NA,11480.86
+2025-05-28 08:26:29,anemonefish,Premnas_biaculeatus,_pca,0.8678,0.6441,0.8444,NA,11582.63
+2025-05-28 08:49:49,anemonefish,Premnas_biaculeatus,_pca,0.8631,0.6347,0.8551,NA,11696.76
+2025-05-28 09:12:49,anemonefish,Premnas_biaculeatus,_pca,0.894,0.6615,0.8609,NA,11219.32
+2025-05-28 09:35:45,anemonefish,Premnas_biaculeatus,_pca,0.8943,0.6533,0.8255,NA,11313.42
+2025-05-28 09:59:09,anemonefish,Premnas_biaculeatus,_pca,0.8812,0.6613,0.8582,NA,11652.04
+2025-05-28 10:22:04,anemonefish,Premnas_biaculeatus,_pca,0.8775,0.6629,0.802,NA,11513.4
+2025-05-28 10:45:49,anemonefish,Premnas_biaculeatus,_pca,0.8872,0.6662,0.8045,NA,11596.19
+2025-05-28 11:08:58,anemonefish,Premnas_biaculeatus,_pca,0.8746,0.651,0.8236,NA,11699.77

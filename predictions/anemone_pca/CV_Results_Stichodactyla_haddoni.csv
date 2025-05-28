@@ -1,0 +1,20 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:44:03,anemone,Stichodactyla_haddoni,_pca,0.8434,0.57,0.7067,NA,8239.93
+2025-05-28 04:08:00,anemone,Stichodactyla_haddoni,_pca,0.835,0.5504,0.7218,NA,8437.2
+2025-05-28 04:32:11,anemone,Stichodactyla_haddoni,_pca,0.8468,0.5569,0.7154,NA,8308.29
+2025-05-28 04:54:28,anemone,Stichodactyla_haddoni,_pca,0.8375,0.5814,0.7225,NA,8579.69
+2025-05-28 05:38:00,anemone,Stichodactyla_haddoni,_pca,0.8464,0.5566,0.7248,NA,8298.43
+2025-05-28 06:01:53,anemone,Stichodactyla_haddoni,_pca,0.8354,0.5673,0.7179,NA,8414.71
+2025-05-28 06:25:42,anemone,Stichodactyla_haddoni,_pca,0.8325,0.5662,0.7393,NA,8587.8
+2025-05-28 06:47:37,anemone,Stichodactyla_haddoni,_pca,0.8476,0.574,0.7195,NA,8212.69
+2025-05-28 07:09:17,anemone,Stichodactyla_haddoni,_pca,0.8621,0.61240000000000006,0.7313,NA,8171.89
+2025-05-28 07:31:48,anemone,Stichodactyla_haddoni,_pca,0.8482,0.5656,0.6852,NA,8179.28
+2025-05-28 07:56:00,anemone,Stichodactyla_haddoni,_pca,0.8364,0.5819,0.722,NA,8581.74
+2025-05-28 08:18:39,anemone,Stichodactyla_haddoni,_pca,0.8467,0.5591,0.7202,NA,8330.26
+2025-05-28 08:43:17,anemone,Stichodactyla_haddoni,_pca,0.84,0.5975,0.7318,NA,8586
+2025-05-28 09:05:55,anemone,Stichodactyla_haddoni,_pca,0.8348,0.5809,0.7153,NA,8584.9
+2025-05-28 09:28:19,anemone,Stichodactyla_haddoni,_pca,0.8366,0.5543,0.6923,NA,8404.61
+2025-05-28 09:52:12,anemone,Stichodactyla_haddoni,_pca,0.8409,0.5979,0.7263,NA,8573.98
+2025-05-28 10:15:21,anemone,Stichodactyla_haddoni,_pca,0.8341,0.5765,0.7326,NA,8590.28
+2025-05-28 10:37:58,anemone,Stichodactyla_haddoni,_pca,0.8363,0.5821,0.7415,NA,8590.8
+2025-05-28 11:01:54,anemone,Stichodactyla_haddoni,_pca,0.8384,0.5958,0.7625,NA,8591.85

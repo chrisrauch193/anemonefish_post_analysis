@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 04:01:59,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9224,0.7302,0.878,NA,5749.16
+2025-05-28 04:26:02,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9279,0.7575,0.883,NA,5708.34
+2025-05-28 04:49:04,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9181,0.7233,0.9013,NA,5769.99
+2025-05-28 05:11:25,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9125,0.6878,0.8702,NA,5827.13
+2025-05-28 05:33:06,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.8996,0.6882,0.8771,NA,5918.92
+2025-05-28 05:55:41,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9334,0.7695,0.8959,NA,13722.4
+2025-05-28 06:19:21,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9229,0.7519,0.9012,NA,5747.53
+2025-05-28 06:42:19,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9228,0.7308,0.8988,NA,5883.86
+2025-05-28 07:04:15,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9316,0.7694,0.9097,NA,5686.09
+2025-05-28 07:25:55,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.93,0.7587,0.8952,NA,5693.68
+2025-05-28 07:50:52,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9339,0.7684,0.8977,NA,5652.53
+2025-05-28 08:13:26,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9243,0.7373,0.8755,NA,5741.19
+2025-05-28 08:37:16,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9338,0.7644,0.8891,NA,5744.09
+2025-05-28 08:59:51,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9251,0.7499,0.9058,NA,5773.54
+2025-05-28 09:22:36,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9315,0.7489,0.8825,NA,5913.2
+2025-05-28 09:45:22,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.921,0.738,0.8839,NA,5749.04
+2025-05-28 10:09:31,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.92,0.7505,0.8928,NA,5772.94
+2025-05-28 10:32:41,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9257,0.7631,0.8962,NA,5747.07
+2025-05-28 10:56:04,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9116,0.7061,0.8921,NA,5830.51
+2025-05-28 11:19:08,anemonefish,Amphiprion_chrysopterus,_combined_pca,0.9256,0.7561,0.8843,NA,5723.35

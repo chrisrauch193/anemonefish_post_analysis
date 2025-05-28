@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:54:29,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9466,0.8271,0.847,NA,8370.07
+2025-05-28 04:18:26,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9711,0.847,0.9052,NA,7905.45
+2025-05-28 04:41:38,anemonefish,Amphiprion_bicinctus,_biotic_only,0.932,0.8058,0.8759,NA,8483.86
+2025-05-28 05:04:25,anemonefish,Amphiprion_bicinctus,_biotic_only,0.967,0.8457,0.9303,NA,8147.42
+2025-05-28 05:26:32,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9512,0.8224,0.9,NA,8263.19
+2025-05-28 05:48:14,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9537,0.8112,0.9149,NA,8344.85
+2025-05-28 06:12:10,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9645,0.8434,0.9258,NA,8259.93
+2025-05-28 06:35:29,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9519,0.8224,0.9296,NA,8215.37
+2025-05-28 06:57:29,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9612,0.844,0.8834,NA,8286.23
+2025-05-28 07:18:39,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9482,0.8341,0.9221,NA,8342.54
+2025-05-28 07:42:26,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9504,0.8221,0.9072,NA,8364.05
+2025-05-28 08:06:04,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9713,0.8515,0.9129,NA,7753.89
+2025-05-28 08:29:27,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9668,0.8422,0.9392,NA,8008.09
+2025-05-28 08:52:51,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9615,0.8354,0.8981,NA,8315.92
+2025-05-28 09:15:47,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9689,0.8565,0.9478,NA,8151.43
+2025-05-28 09:38:52,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9462,0.794,0.9027,NA,8479.33
+2025-05-28 10:02:15,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9583,0.8559,0.9436,NA,8254.59
+2025-05-28 10:24:51,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9675,0.8328,0.8992,NA,7885.8
+2025-05-28 10:48:47,anemonefish,Amphiprion_bicinctus,_biotic_only,0.9629,0.8382,0.933,NA,8179.65
+2025-05-28 11:11:56,anemonefish,Amphiprion_bicinctus,_biotic_only,0.965,0.8409,0.9154,NA,7955.3

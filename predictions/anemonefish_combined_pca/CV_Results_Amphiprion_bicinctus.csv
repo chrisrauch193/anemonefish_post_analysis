@@ -1,0 +1,18 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 04:02:09,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9736,0.8386,0.8794,NA,7261.47
+2025-05-28 04:26:35,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9833,0.8752,0.9115,NA,6728.24
+2025-05-28 04:48:51,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9786,0.8444,0.9023,NA,7272.4
+2025-05-28 05:10:46,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9825,0.8724,0.9235,NA,6753.85
+2025-05-28 05:55:59,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9793,0.8477,0.9318,NA,7252.14
+2025-05-28 06:19:49,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9833,0.8736,0.9206,NA,6760.2
+2025-05-28 06:42:42,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9644,0.8457,0.9263,NA,7465.18
+2025-05-28 07:49:55,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9683,0.8425,0.9229,NA,7369.33
+2025-05-28 08:12:57,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9834,0.8804,0.8802,NA,6660.26
+2025-05-28 08:37:08,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9739,0.8341,0.9335,NA,7358.82
+2025-05-28 09:00:01,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9763,0.8552,0.9165,NA,7312.08
+2025-05-28 09:23:14,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9824,0.8708,0.9292,NA,6761.67
+2025-05-28 09:46:27,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9683,0.8353,0.9085,NA,7399.2
+2025-05-28 10:09:32,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9827,0.8866,0.9411,NA,6594.99
+2025-05-28 10:32:25,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9731,0.8341,0.9023,NA,7419.01
+2025-05-28 10:56:20,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9818,0.8713,0.9241,NA,6755.14
+2025-05-28 11:18:43,anemonefish,Amphiprion_bicinctus,_combined_pca,0.9851,0.8903,0.9154,NA,6464.71

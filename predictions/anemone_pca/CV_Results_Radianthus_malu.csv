@@ -1,0 +1,22 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:43:49,anemone,Radianthus_malu,_pca,0.7848,0.5429,0.7033,NA,1478.49
+2025-05-28 04:07:54,anemone,Radianthus_malu,_pca,0.7797,0.5257,0.5757,NA,1475.41
+2025-05-28 04:31:55,anemone,Radianthus_malu,_pca,0.7993,0.5331,0.7269,NA,1452.22
+2025-05-28 04:54:17,anemone,Radianthus_malu,_pca,0.7831,0.5157,0.591,NA,1475.12
+2025-05-28 05:16:16,anemone,Radianthus_malu,_pca,0.7753,0.5354,0.6765,NA,1486.1
+2025-05-28 05:37:39,anemone,Radianthus_malu,_pca,0.7908,0.5606,0.7189,NA,1479.07
+2025-05-28 06:01:42,anemone,Radianthus_malu,_pca,0.786,0.5653,0.6058,NA,1484.3
+2025-05-28 06:25:39,anemone,Radianthus_malu,_pca,0.7857,0.4826,0.7495,NA,1464.06
+2025-05-28 06:47:21,anemone,Radianthus_malu,_pca,0.8065,0.554,0.7415,NA,1449.4
+2025-05-28 07:08:49,anemone,Radianthus_malu,_pca,0.7853,0.5253,0.6036,NA,1474.4
+2025-05-28 07:31:45,anemone,Radianthus_malu,_pca,0.7873,0.5264,0.6052,NA,1473.56
+2025-05-28 07:55:32,anemone,Radianthus_malu,_pca,0.792,0.5069,0.7342,NA,1450.8
+2025-05-28 08:18:45,anemone,Radianthus_malu,_pca,0.7956,0.4945,0.7496,NA,1450.44
+2025-05-28 08:42:49,anemone,Radianthus_malu,_pca,0.8025,0.5338,0.7582,NA,1460.9
+2025-05-28 09:05:59,anemone,Radianthus_malu,_pca,0.7811,0.5408,0.7026,NA,1476.93
+2025-05-28 09:28:20,anemone,Radianthus_malu,_pca,0.7869,0.5619,0.5813,NA,1483.62
+2025-05-28 09:52:24,anemone,Radianthus_malu,_pca,0.7787,0.5093,0.5806,NA,1472.12
+2025-05-28 10:14:59,anemone,Radianthus_malu,_pca,0.7808,0.5143,0.5808,NA,1474.98
+2025-05-28 10:37:46,anemone,Radianthus_malu,_pca,0.7217,0.5135,Inf,NA,1491.77
+2025-05-28 11:01:40,anemone,Radianthus_malu,_pca,0.7904,0.5179,0.6787,NA,1462.53
+2025-05-28 11:25:19,anemone,Radianthus_malu,_pca,0.7942,0.504,0.7254,NA,1460.17

@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:53:47,anemonefish,Amphiprion_perideraion,_biotic_only,0.8193,0.4974,0.8043,NA,22253.97
+2025-05-28 04:17:40,anemonefish,Amphiprion_perideraion,_biotic_only,0.7465,0.3946,0.7632,NA,22528.61
+2025-05-28 04:40:56,anemonefish,Amphiprion_perideraion,_biotic_only,0.8317,0.548,0.8289,NA,22297.84
+2025-05-28 05:03:32,anemonefish,Amphiprion_perideraion,_biotic_only,0.7751,0.4079,0.7763,NA,22460.84
+2025-05-28 05:25:53,anemonefish,Amphiprion_perideraion,_biotic_only,0.8212,0.5094,0.8114,NA,22281.83
+2025-05-28 05:47:36,anemonefish,Amphiprion_perideraion,_biotic_only,0.8121,0.5049,0.8177,NA,22550.59
+2025-05-28 06:11:20,anemonefish,Amphiprion_perideraion,_biotic_only,0.7969,0.4276,0.7553,NA,22322.51
+2025-05-28 06:34:49,anemonefish,Amphiprion_perideraion,_biotic_only,0.8346,0.555,0.8448,NA,22192.06
+2025-05-28 06:56:41,anemonefish,Amphiprion_perideraion,_biotic_only,0.7773,0.4011,0.7511,NA,22500.84
+2025-05-28 07:17:59,anemonefish,Amphiprion_perideraion,_biotic_only,0.8112,0.52,0.8178,NA,22494.38
+2025-05-28 07:41:45,anemonefish,Amphiprion_perideraion,_biotic_only,0.8217,0.5215,0.802,NA,22406.73
+2025-05-28 08:05:12,anemonefish,Amphiprion_perideraion,_biotic_only,0.745,0.3807,0.7788,NA,22581.21
+2025-05-28 08:28:42,anemonefish,Amphiprion_perideraion,_biotic_only,0.7801,0.4174,0.7406,NA,22442.27
+2025-05-28 08:52:05,anemonefish,Amphiprion_perideraion,_biotic_only,0.8115,0.5206,0.775,NA,22357.1
+2025-05-28 09:14:59,anemonefish,Amphiprion_perideraion,_biotic_only,0.7762,0.399,0.741,NA,22376.72
+2025-05-28 09:38:13,anemonefish,Amphiprion_perideraion,_biotic_only,0.8169,0.4923,0.8283,NA,22283.67
+2025-05-28 10:01:34,anemonefish,Amphiprion_perideraion,_biotic_only,0.8075,0.5337,0.8168,NA,22374.71
+2025-05-28 10:24:08,anemonefish,Amphiprion_perideraion,_biotic_only,0.7908,0.4528,0.7758,NA,22505.84
+2025-05-28 10:47:57,anemonefish,Amphiprion_perideraion,_biotic_only,0.7482,0.3705,0.745,NA,22597.06
+2025-05-28 11:11:06,anemonefish,Amphiprion_perideraion,_biotic_only,0.7943,0.4387,0.7752,NA,22340.94

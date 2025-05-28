@@ -1,0 +1,20 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 04:00:00,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7632,0.3765,0.7513,NA,19901.8
+2025-05-28 04:23:55,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8123,0.5,0.7872,NA,19671.52
+2025-05-28 04:46:43,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8149,0.5004,0.7462,NA,19704.33
+2025-05-28 05:09:36,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7909,0.4804,0.7617,NA,19978.65
+2025-05-28 05:31:30,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8254,0.5279,0.7779,NA,19476.27
+2025-05-28 05:53:46,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8328,0.5299,0.7781,NA,19357.38
+2025-05-28 06:17:51,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7826,0.4743,0.741,NA,20005.67
+2025-05-28 07:02:04,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7986,0.4926,0.7629,NA,20039.28
+2025-05-28 07:23:47,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8257,0.515,0.7953,NA,19496.17
+2025-05-28 07:48:06,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8351,0.5417,0.7869,NA,19433.22
+2025-05-28 08:11:23,anemonefish,Amphiprion_ocellaris,_combined_pca,0.814,0.5302,0.7716,NA,19900.03
+2025-05-28 08:35:16,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8077,0.5064,0.7469,NA,19889.65
+2025-05-28 08:58:27,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8386,0.546,0.805,NA,19375.47
+2025-05-28 09:20:51,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7434,0.3887,0.7622,NA,20083.18
+2025-05-28 09:44:43,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8271,0.5379,0.7576,NA,19492.73
+2025-05-28 10:07:45,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8247,0.5126,0.7933,NA,19548.13
+2025-05-28 10:30:32,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8283,0.5162,0.7855,NA,19431.57
+2025-05-28 10:55:03,anemonefish,Amphiprion_ocellaris,_combined_pca,0.7973,0.4907,0.7839,NA,19935.66
+2025-05-28 11:17:33,anemonefish,Amphiprion_ocellaris,_combined_pca,0.8005,0.5038,0.794,NA,19961.06

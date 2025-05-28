@@ -1,0 +1,20 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:43:08,anemone,Radianthus_magnifica,_pca,0.802,0.4831,0.7822,NA,17201.89
+2025-05-28 04:07:44,anemone,Radianthus_magnifica,_pca,0.7632,0.4556,0.7525,NA,17453.02
+2025-05-28 04:54:16,anemone,Radianthus_magnifica,_pca,0.8078,0.4862,0.7749,NA,17154.48
+2025-05-28 05:15:59,anemone,Radianthus_magnifica,_pca,0.8094,0.4837,0.76,NA,17132.1
+2025-05-28 05:37:20,anemone,Radianthus_magnifica,_pca,0.8129,0.4956,0.7602,NA,17147.24
+2025-05-28 06:01:23,anemone,Radianthus_magnifica,_pca,0.8131,0.4954,0.7596,NA,17133.44
+2025-05-28 06:25:12,anemone,Radianthus_magnifica,_pca,0.817,0.5054,0.7889,NA,17105.32
+2025-05-28 07:08:44,anemone,Radianthus_magnifica,_pca,0.8087,0.4992,0.752,NA,17143.74
+2025-05-28 07:31:25,anemone,Radianthus_magnifica,_pca,0.8093,0.4783,0.8196,NA,17134.71
+2025-05-28 07:55:39,anemone,Radianthus_magnifica,_pca,0.7826,0.4281,0.744,NA,17300.24
+2025-05-28 08:18:25,anemone,Radianthus_magnifica,_pca,0.8066,0.4841,0.7859,NA,17122.36
+2025-05-28 08:42:32,anemone,Radianthus_magnifica,_pca,0.8109,0.4953,0.8129,NA,17124.02
+2025-05-28 09:05:33,anemone,Radianthus_magnifica,_pca,0.8396,0.544,0.7613,NA,16993.72
+2025-05-28 09:27:49,anemone,Radianthus_magnifica,_pca,0.8077,0.4806,0.769,NA,17136.03
+2025-05-28 09:51:42,anemone,Radianthus_magnifica,_pca,0.764,0.4551,0.7732,NA,17450.51
+2025-05-28 10:14:34,anemone,Radianthus_magnifica,_pca,0.8102,0.4936,0.7908,NA,17151.08
+2025-05-28 10:37:38,anemone,Radianthus_magnifica,_pca,0.8062,0.4825,0.7684,NA,17158.63
+2025-05-28 11:01:16,anemone,Radianthus_magnifica,_pca,0.7756,0.4395,0.8072,NA,17346.39
+2025-05-28 11:24:38,anemone,Radianthus_magnifica,_pca,0.8137,0.4943,0.7997,NA,17172.38

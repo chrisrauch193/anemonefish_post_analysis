@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:53:50,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8547,0.6168,0.6975,NA,3508.91
+2025-05-28 04:17:47,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8518,0.6198,0.7981,NA,3515.28
+2025-05-28 04:40:58,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8689,0.6129,0.7404,NA,3495.21
+2025-05-28 05:03:37,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8672,0.6099,0.8297,NA,3506.44
+2025-05-28 05:25:54,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8596,0.6221,0.8711,NA,3485.66
+2025-05-28 05:47:34,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8346,0.5959,0.7968,NA,3538.9
+2025-05-28 06:11:26,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8501,0.614,0.7206,NA,3512.1
+2025-05-28 06:34:50,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8666,0.6272,0.8687,NA,3487.69
+2025-05-28 06:56:48,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8685,0.6313,0.836,NA,3487.43
+2025-05-28 07:18:03,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8634,0.6151,0.8824,NA,3492.97
+2025-05-28 07:41:50,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8829,0.6289,0.8479,NA,3441.7
+2025-05-28 08:05:16,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8318,0.5399,0.8243,NA,3562.03
+2025-05-28 08:28:46,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8631,0.596,0.8746,NA,3476.74
+2025-05-28 08:52:13,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8606,0.6168,0.8254,NA,3496.53
+2025-05-28 09:15:04,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8604,0.6157,0.7319,NA,3506.95
+2025-05-28 09:38:13,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8386,0.6115,0.6933,NA,3524.65
+2025-05-28 10:01:35,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8616,0.6133,0.7335,NA,3508.12
+2025-05-28 10:24:10,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8589,0.613,0.8644,NA,3503.47
+2025-05-28 10:48:03,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8467,0.6036,0.738,NA,3516
+2025-05-28 11:11:11,anemonefish,Amphiprion_sandaracinos,_biotic_only,0.8598,0.6157,0.7766,NA,3515.14

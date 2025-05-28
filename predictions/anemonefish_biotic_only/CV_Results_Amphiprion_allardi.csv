@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:54:17,anemonefish,Amphiprion_allardi,_biotic_only,0.9532,0.8551,0.9584,NA,4279.08
+2025-05-28 04:18:10,anemonefish,Amphiprion_allardi,_biotic_only,0.9455,0.7869,0.9416,NA,4339.06
+2025-05-28 04:41:20,anemonefish,Amphiprion_allardi,_biotic_only,0.9529,0.8086,0.9638,NA,4283.72
+2025-05-28 05:04:04,anemonefish,Amphiprion_allardi,_biotic_only,0.9529,0.8,0.9634,NA,4324.53
+2025-05-28 05:26:15,anemonefish,Amphiprion_allardi,_biotic_only,0.9448,0.8105,0.9605,NA,4315.86
+2025-05-28 05:47:58,anemonefish,Amphiprion_allardi,_biotic_only,0.9489,0.7645,0.9676,NA,4283.41
+2025-05-28 06:11:50,anemonefish,Amphiprion_allardi,_biotic_only,0.9433,0.7726,0.9642,NA,4358.22
+2025-05-28 06:35:12,anemonefish,Amphiprion_allardi,_biotic_only,0.9478,0.8072,0.954,NA,4294.55
+2025-05-28 06:57:09,anemonefish,Amphiprion_allardi,_biotic_only,0.9444,0.7934,0.9647,NA,4346.24
+2025-05-28 07:18:30,anemonefish,Amphiprion_allardi,_biotic_only,0.9575,0.8273,0.9656,NA,4272.51
+2025-05-28 07:42:13,anemonefish,Amphiprion_allardi,_biotic_only,0.9428,0.7771,0.9514,NA,4332.15
+2025-05-28 08:05:45,anemonefish,Amphiprion_allardi,_biotic_only,0.9465,0.8137,0.9661,NA,4314.86
+2025-05-28 08:29:16,anemonefish,Amphiprion_allardi,_biotic_only,0.9508,0.8468,0.9579,NA,4325.79
+2025-05-28 08:52:47,anemonefish,Amphiprion_allardi,_biotic_only,0.9384,0.815,0.9487,NA,4459.97
+2025-05-28 09:15:42,anemonefish,Amphiprion_allardi,_biotic_only,0.9369,0.7823,0.9662,NA,4458.16
+2025-05-28 09:38:44,anemonefish,Amphiprion_allardi,_biotic_only,0.9502,0.815,0.9468,NA,4279.76
+2025-05-28 10:02:10,anemonefish,Amphiprion_allardi,_biotic_only,0.9462,0.8095,0.9643,NA,4397.65
+2025-05-28 10:24:49,anemonefish,Amphiprion_allardi,_biotic_only,0.9432,0.7995,0.9535,NA,4392.04
+2025-05-28 10:48:23,anemonefish,Amphiprion_allardi,_biotic_only,0.943,0.7504,0.959,NA,4303.63
+2025-05-28 11:11:46,anemonefish,Amphiprion_allardi,_biotic_only,0.9458,0.8184,0.9721,NA,4416.57

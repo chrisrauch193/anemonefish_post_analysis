@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:43:25,anemone,Stichodactyla_gigantea,_pca,0.8366,0.5512,0.5974,NA,4655.63
+2025-05-28 04:07:31,anemone,Stichodactyla_gigantea,_pca,0.7552,0.4449,0.6758,NA,5396.9
+2025-05-28 04:31:39,anemone,Stichodactyla_gigantea,_pca,0.8508,0.5798,0.5901,NA,10551.12
+2025-05-28 04:54:09,anemone,Stichodactyla_gigantea,_pca,0.7445,0.4636,0.6656,NA,5402.2
+2025-05-28 05:16:05,anemone,Stichodactyla_gigantea,_pca,0.8395,0.568,0.635,NA,4650.23
+2025-05-28 05:37:28,anemone,Stichodactyla_gigantea,_pca,0.8371,0.5745,0.5945,NA,5318.31
+2025-05-28 06:01:05,anemone,Stichodactyla_gigantea,_pca,0.7391,0.4257,0.603,NA,5389.31
+2025-05-28 06:47:12,anemone,Stichodactyla_gigantea,_pca,0.7325,0.4122,0.631,NA,5396.23
+2025-05-28 07:08:54,anemone,Stichodactyla_gigantea,_pca,0.838,0.5569,0.5834,NA,4707.54
+2025-05-28 07:31:34,anemone,Stichodactyla_gigantea,_pca,0.838,0.5664,0.5923,NA,4625.16
+2025-05-28 07:55:43,anemone,Stichodactyla_gigantea,_pca,0.7759,0.4938,0.6249,NA,5401.16
+2025-05-28 08:18:37,anemone,Stichodactyla_gigantea,_pca,0.7629,0.4461,0.6235,NA,5397.57
+2025-05-28 08:42:37,anemone,Stichodactyla_gigantea,_pca,0.8404,0.5624,0.5672,NA,4650.58
+2025-05-28 09:05:41,anemone,Stichodactyla_gigantea,_pca,0.7478,0.4257,0.5998,NA,5393.79
+2025-05-28 09:27:48,anemone,Stichodactyla_gigantea,_pca,0.8467,0.6043,0.5693,NA,4541.17
+2025-05-28 09:51:38,anemone,Stichodactyla_gigantea,_pca,0.8468,0.5677,0.5967,NA,4589.88
+2025-05-28 10:14:54,anemone,Stichodactyla_gigantea,_pca,0.834,0.5737,0.5677,NA,4928.37
+2025-05-28 10:37:30,anemone,Stichodactyla_gigantea,_pca,0.7526,0.4759,0.6688,NA,5404.19
+2025-05-28 11:01:21,anemone,Stichodactyla_gigantea,_pca,0.7508,0.4407,0.6156,NA,5395.51
+2025-05-28 11:25:02,anemone,Stichodactyla_gigantea,_pca,0.8381,0.553,0.6178,NA,4648.13

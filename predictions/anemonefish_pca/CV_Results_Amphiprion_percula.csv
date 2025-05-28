@@ -1,0 +1,20 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:51:22,anemonefish,Amphiprion_percula,_pca,0.8957,0.669,0.8075,NA,7022.84
+2025-05-28 04:15:10,anemonefish,Amphiprion_percula,_pca,0.9009,0.6729,0.8194,NA,6951.43
+2025-05-28 04:38:25,anemonefish,Amphiprion_percula,_pca,0.8626,0.6702,0.8442,NA,7303.96
+2025-05-28 05:01:07,anemonefish,Amphiprion_percula,_pca,0.9079,0.7156,0.8211,NA,6882.37
+2025-05-28 05:23:05,anemonefish,Amphiprion_percula,_pca,0.8992,0.6879,0.8276,NA,7041.44
+2025-05-28 05:44:44,anemonefish,Amphiprion_percula,_pca,0.8985,0.6943,0.8225,NA,6983.28
+2025-05-28 06:08:34,anemonefish,Amphiprion_percula,_pca,0.8998,0.7107,0.7952,NA,6937.44
+2025-05-28 06:54:10,anemonefish,Amphiprion_percula,_pca,0.8245,0.5652,0.7364,NA,7443.09
+2025-05-28 07:15:46,anemonefish,Amphiprion_percula,_pca,0.8981,0.7012,0.7682,NA,7021.96
+2025-05-28 07:38:56,anemonefish,Amphiprion_percula,_pca,0.8943,0.6877,0.7516,NA,7036.86
+2025-05-28 08:02:37,anemonefish,Amphiprion_percula,_pca,0.8743,0.6862,0.7151,NA,7206.61
+2025-05-28 08:25:45,anemonefish,Amphiprion_percula,_pca,0.8882,0.6903,0.7963,NA,7170.74
+2025-05-28 08:49:29,anemonefish,Amphiprion_percula,_pca,0.8983,0.6847,0.7432,NA,6966.7
+2025-05-28 09:12:49,anemonefish,Amphiprion_percula,_pca,0.8975,0.6996,0.7951,NA,7002.65
+2025-05-28 09:35:08,anemonefish,Amphiprion_percula,_pca,0.9045,0.7106,0.7654,NA,6929.17
+2025-05-28 09:58:26,anemonefish,Amphiprion_percula,_pca,0.9057,0.6961,0.8216,NA,6928.16
+2025-05-28 10:21:47,anemonefish,Amphiprion_percula,_pca,0.8984,0.7013,0.8374,NA,6996.76
+2025-05-28 10:44:55,anemonefish,Amphiprion_percula,_pca,0.8862,0.6747,0.7559,NA,7128.1
+2025-05-28 11:08:05,anemonefish,Amphiprion_percula,_pca,0.8884,0.6788,0.7505,NA,7121.13

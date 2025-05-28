@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:59:29,anemonefish,Amphiprion_clarkii,_combined_pca,0.7567,0.4627,0.737,NA,39685.71
+2025-05-28 04:23:44,anemonefish,Amphiprion_clarkii,_combined_pca,0.7742,0.436,0.756,NA,39433.81
+2025-05-28 04:47:07,anemonefish,Amphiprion_clarkii,_combined_pca,0.7681,0.4256,0.7542,NA,39502.72
+2025-05-28 05:09:25,anemonefish,Amphiprion_clarkii,_combined_pca,0.7639,0.4181,0.7344,NA,39605.61
+2025-05-28 05:31:02,anemonefish,Amphiprion_clarkii,_combined_pca,0.7501,0.4519,0.7487,NA,39691.02
+2025-05-28 05:53:49,anemonefish,Amphiprion_clarkii,_combined_pca,0.7515,0.4262,0.728,NA,39653.23
+2025-05-28 06:17:38,anemonefish,Amphiprion_clarkii,_combined_pca,0.7494,0.4027,0.7382,NA,39574.12
+2025-05-28 06:40:17,anemonefish,Amphiprion_clarkii,_combined_pca,0.7632,0.4311,0.7737,NA,39506.04
+2025-05-28 07:01:57,anemonefish,Amphiprion_clarkii,_combined_pca,0.78,0.4209,0.771,NA,39507.29
+2025-05-28 07:23:44,anemonefish,Amphiprion_clarkii,_combined_pca,0.7439,0.4348,0.7292,NA,39777.96
+2025-05-28 07:47:35,anemonefish,Amphiprion_clarkii,_combined_pca,0.7607,0.4416,0.7438,NA,39599.87
+2025-05-28 08:11:19,anemonefish,Amphiprion_clarkii,_combined_pca,0.7786,0.4327,0.778,NA,39519.17
+2025-05-28 08:35:21,anemonefish,Amphiprion_clarkii,_combined_pca,0.8494,0.5501,0.7139,NA,38997.48
+2025-05-28 08:57:28,anemonefish,Amphiprion_clarkii,_combined_pca,0.7677,0.4317,0.8005,NA,39484.65
+2025-05-28 09:20:22,anemonefish,Amphiprion_clarkii,_combined_pca,0.7665,0.4376,0.7109,NA,39566.02
+2025-05-28 09:43:55,anemonefish,Amphiprion_clarkii,_combined_pca,0.8356,0.5284,0.6993,NA,38626.05
+2025-05-28 10:07:02,anemonefish,Amphiprion_clarkii,_combined_pca,0.7501,0.4233,0.73,NA,39665.39
+2025-05-28 10:30:09,anemonefish,Amphiprion_clarkii,_combined_pca,0.7542,0.4288,0.7168,NA,39647.64
+2025-05-28 10:53:53,anemonefish,Amphiprion_clarkii,_combined_pca,0.7594,0.4013,0.7468,NA,39604.89
+2025-05-28 11:16:42,anemonefish,Amphiprion_clarkii,_combined_pca,0.7804,0.4333,0.771,NA,39431.45

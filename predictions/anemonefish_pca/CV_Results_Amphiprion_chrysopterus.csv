@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:49:11,anemonefish,Amphiprion_chrysopterus,_pca,0.9224,0.759,0.875,NA,5809.01
+2025-05-28 04:13:33,anemonefish,Amphiprion_chrysopterus,_pca,0.9255,0.7622,0.8656,NA,5784.32
+2025-05-28 04:37:37,anemonefish,Amphiprion_chrysopterus,_pca,0.9223,0.7598,0.8962,NA,5791.17
+2025-05-28 04:59:49,anemonefish,Amphiprion_chrysopterus,_pca,0.9202,0.7501,0.8839,NA,5822.3
+2025-05-28 05:21:46,anemonefish,Amphiprion_chrysopterus,_pca,0.921,0.7445,0.8759,NA,5799.54
+2025-05-28 05:43:30,anemonefish,Amphiprion_chrysopterus,_pca,0.9251,0.7642,0.9032,NA,8047.48
+2025-05-28 06:07:18,anemonefish,Amphiprion_chrysopterus,_pca,0.9216,0.7602,0.9052,NA,5827.41
+2025-05-28 06:30:52,anemonefish,Amphiprion_chrysopterus,_pca,0.9233,0.7523,0.8899,NA,5967.73
+2025-05-28 06:52:56,anemonefish,Amphiprion_chrysopterus,_pca,0.9257,0.7705,0.908,NA,5819.4
+2025-05-28 07:14:50,anemonefish,Amphiprion_chrysopterus,_pca,0.9235,0.7531,0.8863,NA,5789.9
+2025-05-28 07:37:31,anemonefish,Amphiprion_chrysopterus,_pca,0.9254,0.7563,0.8967,NA,5776.85
+2025-05-28 08:01:20,anemonefish,Amphiprion_chrysopterus,_pca,0.9228,0.7573,0.8901,NA,5835.38
+2025-05-28 08:25:04,anemonefish,Amphiprion_chrysopterus,_pca,0.9244,0.7484,0.8908,NA,5808.21
+2025-05-28 08:48:14,anemonefish,Amphiprion_chrysopterus,_pca,0.9269,0.7612,0.9118,NA,5878.21
+2025-05-28 09:11:01,anemonefish,Amphiprion_chrysopterus,_pca,0.9245,0.7554,0.8846,NA,5813.85
+2025-05-28 09:33:41,anemonefish,Amphiprion_chrysopterus,_pca,0.923,0.761,0.8855,NA,5805.72
+2025-05-28 09:57:18,anemonefish,Amphiprion_chrysopterus,_pca,0.9192,0.7424,0.8917,NA,5832.26
+2025-05-28 10:20:36,anemonefish,Amphiprion_chrysopterus,_pca,0.9261,0.7687,0.8979,NA,5809.61
+2025-05-28 10:44:08,anemonefish,Amphiprion_chrysopterus,_pca,0.9236,0.7579,0.889,NA,5773.73
+2025-05-28 11:06:54,anemonefish,Amphiprion_chrysopterus,_pca,0.9192,0.7473,0.8863,NA,5900.58

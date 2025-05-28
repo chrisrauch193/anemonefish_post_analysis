@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:53:28,anemonefish,Amphiprion_clarkii,_biotic_only,0.706,0.3619,0.6996,NA,40516.48
+2025-05-28 04:17:24,anemonefish,Amphiprion_clarkii,_biotic_only,0.7564,0.4319,0.7512,NA,39819.76
+2025-05-28 04:40:37,anemonefish,Amphiprion_clarkii,_biotic_only,0.7346,0.3826,0.7333,NA,40088.03
+2025-05-28 05:03:17,anemonefish,Amphiprion_clarkii,_biotic_only,0.7524,0.4086,0.7509,NA,39837.66
+2025-05-28 05:25:33,anemonefish,Amphiprion_clarkii,_biotic_only,0.7397,0.4367,0.7426,NA,40050.38
+2025-05-28 05:47:13,anemonefish,Amphiprion_clarkii,_biotic_only,0.7422,0.4021,0.7323,NA,40006.4
+2025-05-28 06:11:02,anemonefish,Amphiprion_clarkii,_biotic_only,0.7371,0.3881,0.7411,NA,39875.19
+2025-05-28 06:34:26,anemonefish,Amphiprion_clarkii,_biotic_only,0.749,0.4127,0.774,NA,39839.03
+2025-05-28 06:56:27,anemonefish,Amphiprion_clarkii,_biotic_only,0.7516,0.4094,0.7476,NA,39831.01
+2025-05-28 07:17:40,anemonefish,Amphiprion_clarkii,_biotic_only,0.7162,0.3926,0.7087,NA,40416.84
+2025-05-28 07:41:26,anemonefish,Amphiprion_clarkii,_biotic_only,0.7505,0.4447,0.7584,NA,40015.56
+2025-05-28 08:04:56,anemonefish,Amphiprion_clarkii,_biotic_only,0.7722,0.4308,0.7728,NA,39608.53
+2025-05-28 08:28:22,anemonefish,Amphiprion_clarkii,_biotic_only,0.7213,0.3662,0.698,NA,40093.98
+2025-05-28 08:51:47,anemonefish,Amphiprion_clarkii,_biotic_only,0.7557,0.4187,0.7883,NA,39834.32
+2025-05-28 09:14:44,anemonefish,Amphiprion_clarkii,_biotic_only,0.7563,0.4429,0.7197,NA,39771.18
+2025-05-28 09:37:51,anemonefish,Amphiprion_clarkii,_biotic_only,0.7312,0.3788,0.7041,NA,40135.52
+2025-05-28 10:01:16,anemonefish,Amphiprion_clarkii,_biotic_only,0.742,0.4104,0.7354,NA,39970.87
+2025-05-28 10:23:50,anemonefish,Amphiprion_clarkii,_biotic_only,0.7458,0.4197,0.7209,NA,39949.12
+2025-05-28 10:47:39,anemonefish,Amphiprion_clarkii,_biotic_only,0.7548,0.4021,0.756,NA,39837.06
+2025-05-28 11:10:53,anemonefish,Amphiprion_clarkii,_biotic_only,0.7685,0.4237,0.7665,NA,39642.44

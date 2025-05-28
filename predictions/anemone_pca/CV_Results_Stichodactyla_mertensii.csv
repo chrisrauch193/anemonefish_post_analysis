@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:43:36,anemone,Stichodactyla_mertensii,_pca,0.8602,0.6395,0.8044,NA,4206.23
+2025-05-28 04:07:41,anemone,Stichodactyla_mertensii,_pca,0.838,0.6423,0.7829,NA,4396.87
+2025-05-28 04:32:20,anemone,Stichodactyla_mertensii,_pca,0.8637,0.6644,0.8269,NA,4203.67
+2025-05-28 04:54:24,anemone,Stichodactyla_mertensii,_pca,0.837,0.6348,0.7819,NA,4411.74
+2025-05-28 05:15:56,anemone,Stichodactyla_mertensii,_pca,0.8384,0.641,0.7804,NA,4350.21
+2025-05-28 05:37:35,anemone,Stichodactyla_mertensii,_pca,0.8641,0.6314,0.8309,NA,4151.69
+2025-05-28 06:01:43,anemone,Stichodactyla_mertensii,_pca,0.8692,0.6745,0.804,NA,4204.14
+2025-05-28 06:25:38,anemone,Stichodactyla_mertensii,_pca,0.8686,0.666,0.8258,NA,4196.96
+2025-05-28 06:47:21,anemone,Stichodactyla_mertensii,_pca,0.8405,0.6491,0.7824,NA,4380.71
+2025-05-28 07:09:11,anemone,Stichodactyla_mertensii,_pca,0.837,0.641,0.7786,NA,4377.29
+2025-05-28 07:31:26,anemone,Stichodactyla_mertensii,_pca,0.8377,0.6462,0.7859,NA,4377.38
+2025-05-28 08:18:49,anemone,Stichodactyla_mertensii,_pca,0.8422,0.6435,0.7838,NA,4389.44
+2025-05-28 08:43:09,anemone,Stichodactyla_mertensii,_pca,0.8427,0.6463,0.7811,NA,4456.44
+2025-05-28 09:05:53,anemone,Stichodactyla_mertensii,_pca,0.8428,0.6524,0.7804,NA,4401.9
+2025-05-28 09:28:09,anemone,Stichodactyla_mertensii,_pca,0.8379,0.64,0.7833,NA,4380.27
+2025-05-28 09:52:04,anemone,Stichodactyla_mertensii,_pca,0.8414,0.6539,0.7742,NA,4466.74
+2025-05-28 10:15:09,anemone,Stichodactyla_mertensii,_pca,0.8414,0.6475,0.7771,NA,4345.06
+2025-05-28 10:37:54,anemone,Stichodactyla_mertensii,_pca,0.8391,0.6456,0.7829,NA,4416.41
+2025-05-28 11:01:39,anemone,Stichodactyla_mertensii,_pca,0.8688,0.6579,0.7966,NA,4183.63
+2025-05-28 11:25:01,anemone,Stichodactyla_mertensii,_pca,0.8381,0.636,0.779,NA,4450.8

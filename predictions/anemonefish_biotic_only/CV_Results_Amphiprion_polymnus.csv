@@ -1,0 +1,21 @@
+Timestamp,GroupName,SpeciesName,PredictorSuffix,AUC_train,TSS_train,AUC_test_CV,TSS_test_CV,AICc
+2025-05-28 03:53:42,anemonefish,Amphiprion_polymnus,_biotic_only,0.8807,0.6289,0.8358,NA,2349.61
+2025-05-28 04:17:39,anemonefish,Amphiprion_polymnus,_biotic_only,0.8761,0.6188,0.8532,NA,2350.76
+2025-05-28 04:40:53,anemonefish,Amphiprion_polymnus,_biotic_only,0.8915,0.6349,0.8193,NA,2325.2
+2025-05-28 05:03:32,anemonefish,Amphiprion_polymnus,_biotic_only,0.887,0.6428,0.851,NA,2323.16
+2025-05-28 05:25:47,anemonefish,Amphiprion_polymnus,_biotic_only,0.8871,0.6536,0.8751,NA,2283.53
+2025-05-28 05:47:30,anemonefish,Amphiprion_polymnus,_biotic_only,0.8719,0.6251,0.8571,NA,2354.62
+2025-05-28 06:11:16,anemonefish,Amphiprion_polymnus,_biotic_only,0.8689,0.611,0.8393,NA,2378.03
+2025-05-28 06:34:44,anemonefish,Amphiprion_polymnus,_biotic_only,0.8817,0.6127,0.8538,NA,2323.54
+2025-05-28 06:56:40,anemonefish,Amphiprion_polymnus,_biotic_only,0.884,0.6491,0.8387,NA,2345.83
+2025-05-28 07:17:52,anemonefish,Amphiprion_polymnus,_biotic_only,0.8941,0.6635,0.8504,NA,2316.48
+2025-05-28 07:41:37,anemonefish,Amphiprion_polymnus,_biotic_only,0.8821,0.6695,0.8625,NA,2330.59
+2025-05-28 08:05:11,anemonefish,Amphiprion_polymnus,_biotic_only,0.9069,0.6543,0.8609,NA,2280.34
+2025-05-28 08:28:41,anemonefish,Amphiprion_polymnus,_biotic_only,0.8852,0.643,0.8234,NA,2343.69
+2025-05-28 08:52:04,anemonefish,Amphiprion_polymnus,_biotic_only,0.8787,0.5975,0.879,NA,2326.87
+2025-05-28 09:14:57,anemonefish,Amphiprion_polymnus,_biotic_only,0.8802,0.6035,0.8026,NA,2331.19
+2025-05-28 09:38:08,anemonefish,Amphiprion_polymnus,_biotic_only,0.8848,0.618,0.8625,NA,2364.91
+2025-05-28 10:01:31,anemonefish,Amphiprion_polymnus,_biotic_only,0.8858,0.6236,0.8476,NA,2320.71
+2025-05-28 10:24:04,anemonefish,Amphiprion_polymnus,_biotic_only,0.887,0.6338,0.8417,NA,2327.28
+2025-05-28 10:47:53,anemonefish,Amphiprion_polymnus,_biotic_only,0.8729,0.6081,0.8406,NA,2342.28
+2025-05-28 11:11:07,anemonefish,Amphiprion_polymnus,_biotic_only,0.8615,0.5936,0.8406,NA,2361.77
