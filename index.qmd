@@ -37,23 +37,68 @@ if (!exists("config")) stop("FATAL: 'config' list not found after sourcing confi
 source(file.path(config$helpers_dir, "sdm_modeling_helpers.R")) # If needed
 
 
+# --- Create Essential Output Directories ---
+# This assumes config$base_dir is correctly defined in your config.R as the project root
+# and you want to create directories relative to that.
+
+# 1. Directory for general analysis outputs (like CSV summaries)
+analysis_output_dir <- file.path(config$base_dir, "outputs_for_analysis")
+if (!dir.exists(analysis_output_dir)) {
+  dir.create(analysis_output_dir, recursive = TRUE)
+  cat("Created directory for analysis outputs at:", analysis_output_dir, "\n")
+}
+
+# 2. Directory for figures
+figure_output_dir <- file.path(config$base_dir, "figure_files")
+if (!dir.exists(figure_output_dir)) {
+  dir.create(figure_output_dir, recursive = TRUE)
+  cat("Created directory for figures at:", figure_output_dir, "\n")
+}
+
+# You can add other commonly used output directories here if needed.
+# For example, if you have a specific place for model objects:
+# model_objects_dir <- file.path(config$base_dir, "model_objects")
+# if (!dir.exists(model_objects_dir)) {
+#   dir.create(model_objects_dir, recursive = TRUE)
+#   cat("Created directory for model objects at:", model_objects_dir, "\n")
+# }
+
+cat("--- Setup: Essential output directories checked/created. ---\n")
+
+
+# --- Scenario Label Converter (Good to have this defined early) ---
 scenario_label_converter <- c(
   "current"     = "Current",
   "ssp119_2050" = "SSP1-1.9 (2050)",
   "ssp119_2100" = "SSP1-1.9 (2100)",
-  "ssp245_2050" = "SSP2-4.5 (2050)", # Example, add if you have it
-  "ssp245_2100" = "SSP2-4.5 (2100)", # Example, add if you have it
-  "ssp370_2050" = "SSP3-7.0 (2050)", # Example, add if you have it
-  "ssp370_2100" = "SSP3-7.0 (2100)", # Example, add if you have it
+  "ssp245_2050" = "SSP2-4.5 (2050)", 
+  "ssp245_2100" = "SSP2-4.5 (2100)", 
+  "ssp370_2050" = "SSP3-7.0 (2050)", 
+  "ssp370_2100" = "SSP3-7.0 (2100)", 
   "ssp585_2050" = "SSP5-8.5 (2050)",
   "ssp585_2100" = "SSP5-8.5 (2100)"
+  # Add any other scenarios your project uses
 )
+
+cat("--- Setup: Scenario label converter defined. ---\n")
 ```
+
+if (!is.null(host_pred_stack_cropped)) {
+
+plot(host_pred_stack_cropped, main = "Individual Host Anemone Suitability (Cropped)")
+
+}
+
+if (!is.null(fish_pred_stack_cropped)) {
+
+plot(fish_pred_stack_cropped, main = "Individual Anemonefish (Env-Only) Suitability (Cropped)")
+
+}
 
 ```{r load-and-process-rasters}
 #| label: load-and-process-rasters
-#| fig-width: 10
-#| fig-height: 8
+#| fig-width: 10 # This controls RMarkdown display size
+#| fig-height: 8  # This controls RMarkdown display size
 
 # --- Define Parameters ---
 current_scenario_name <- "current"
@@ -72,18 +117,16 @@ host_short_names <- c()
 
 for (i in 1:nrow(anemone_species_df)) {
   sp_name_sanitized <- gsub(" ", "_", anemone_species_df$scientificName[i])
-  # Use the construct_prediction_filename helper if it's available and loaded
-  # Otherwise, construct manually (ensure it matches your file naming)
   pred_file_path <- construct_prediction_filename(
     species_name_sanitized = sp_name_sanitized,
     scenario_name = current_scenario_name,
-    predictor_type_suffix = predictor_suffix, # Suffix for anemone env-only models
+    predictor_type_suffix = predictor_suffix, 
     config = config
   )
   
   if (file.exists(pred_file_path)) {
     host_raster_files <- c(host_raster_files, pred_file_path)
-    host_short_names <- c(host_short_names, sp_name_sanitized) # Or create 2-letter codes
+    host_short_names <- c(host_short_names, sp_name_sanitized) 
   } else {
     cat("Warning: Host prediction file not found for", sp_name_sanitized, "at", pred_file_path, "\n")
   }
@@ -99,13 +142,9 @@ if (length(host_raster_files) > 0) {
   names(host_richness_sum) <- "HostAnemoneRichness"
   cat("Calculated host anemone summed richness.\n")
   
-  # Optional: Plot individual host rasters and summed richness before cropping
-  # plot(host_pred_stack, main = "Individual Host Anemone Suitability (Current)")
-  # plot(host_richness_sum, main = "Summed Host Anemone Richness (Current - Uncropped)")
-  
 } else {
   cat("Error: No host anemone prediction rasters found. Cannot proceed with host richness.\n")
-  host_richness_sum <- NULL # Ensure it's NULL if no files found
+  host_richness_sum <- NULL 
 }
 
 
@@ -121,11 +160,10 @@ fish_short_names <- c()
 
 for (i in 1:nrow(anemonefish_species_df)) {
   sp_name_sanitized <- gsub(" ", "_", anemonefish_species_df$scientificName[i])
-  # Suffix for anemonefish env-only models (from 06b)
   pred_file_path <- construct_prediction_filename(
     species_name_sanitized = sp_name_sanitized,
     scenario_name = current_scenario_name,
-    predictor_type_suffix = predictor_suffix, # Same suffix if using same method (PCA/VIF)
+    predictor_type_suffix = predictor_suffix, 
     config = config
   )
   
@@ -147,13 +185,9 @@ if (length(fish_raster_files) > 0) {
   names(fish_richness_sum) <- "AnemonefishRichness_EnvOnly"
   cat("Calculated anemonefish (env-only) summed richness.\n")
   
-  # Optional: Plot individual fish rasters and summed richness before cropping
-  # plot(fish_pred_stack, main = "Individual Anemonefish Suitability (Current, Env-Only)")
-  # plot(fish_richness_sum, main = "Summed Anemonefish Richness (Current, Env-Only - Uncropped)")
-
 } else {
   cat("Error: No anemonefish (env-only) prediction rasters found. Cannot proceed with fish richness.\n")
-  fish_richness_sum <- NULL # Ensure it's NULL
+  fish_richness_sum <- NULL 
 }
 
 
@@ -205,13 +239,71 @@ if (config$apply_indo_pacific_crop) {
   fish_richness_sum_cropped <- fish_richness_sum
 }
 
-# --- 4. Plot Cropped Richness Maps ---
-cat("\n--- Plotting Cropped Richness Maps ---\n")
-if (!is.null(host_richness_sum_cropped)) {
-  plot(host_richness_sum_cropped, main = "Summed Host Anemone Richness (Current - Cropped)")
+# --- 4. Plot Cropped Richness Maps AND SAVE THEM ---
+cat("\n--- Plotting and Saving Cropped Richness Maps ---\n")
+
+# Check if figure_output_dir exists (it should if setup chunk ran)
+if (!exists("figure_output_dir") || !dir.exists(figure_output_dir)) {
+  cat("Warning: 'figure_output_dir' not defined or does not exist. Plots will not be saved to file.\n")
+  # Optionally, define it here as a fallback, though it's better in setup
+  # figure_output_dir <- file.path(config$base_dir, "figure_files")
+  # if (!dir.exists(figure_output_dir)) dir.create(figure_output_dir, recursive = TRUE)
 }
+
+# Define plot parameters (can be customized)
+plot_params <- list(
+  col = hcl.colors(255, "viridis"), # Using viridis palette
+  plg = list(loc = "right", title = "Richness", cex = 0.9, title.cex=0.9),
+  pax = list(cex.axis = 0.9, cex.lab=0.9)
+)
+# Define common plot dimensions for saved files
+png_width <- 1000 # pixels
+png_height <- 750 # pixels
+png_res <- 100    # dpi
+
+
+if (!is.null(host_richness_sum_cropped)) {
+  # Plot to RMarkdown output first
+  plot(host_richness_sum_cropped, 
+       main = "Summed Host Anemone Richness (Current, Cropped)", 
+       col = plot_params$col, 
+       plg = plot_params$plg, 
+       pax = plot_params$pax)
+  
+  # Save the plot if directory exists
+  if (exists("figure_output_dir") && dir.exists(figure_output_dir)) {
+    host_plot_filename <- file.path(figure_output_dir, "host_richness_current_cropped.png")
+    png(filename = host_plot_filename, width = png_width, height = png_height, units = "px", res = png_res)
+    plot(host_richness_sum_cropped, 
+         main = "Summed Host Anemone Richness (Current, Cropped)", 
+         col = plot_params$col, 
+         plg = plot_params$plg, 
+         pax = plot_params$pax)
+    dev.off()
+    cat("Saved host richness plot to:", host_plot_filename, "\n")
+  }
+}
+
 if (!is.null(fish_richness_sum_cropped)) {
-  plot(fish_richness_sum_cropped, main = "Summed Anemonefish Richness (Current, Env-Only - Cropped)")
+  # Plot to RMarkdown output first
+  plot(fish_richness_sum_cropped, 
+       main = "Summed Anemonefish Richness (Current, Env-Only, Cropped)",
+       col = plot_params$col, 
+       plg = plot_params$plg, 
+       pax = plot_params$pax)
+
+  # Save the plot if directory exists
+  if (exists("figure_output_dir") && dir.exists(figure_output_dir)) {
+    fish_plot_filename <- file.path(figure_output_dir, "fish_richness_current_env_only_cropped.png")
+    png(filename = fish_plot_filename, width = png_width, height = png_height, units = "px", res = png_res)
+    plot(fish_richness_sum_cropped, 
+         main = "Summed Anemonefish Richness (Current, Env-Only, Cropped)",
+         col = plot_params$col, 
+         plg = plot_params$plg, 
+         pax = plot_params$pax)
+    dev.off()
+    cat("Saved anemonefish richness plot to:", fish_plot_filename, "\n")
+  }
 }
 
 # Optional: Plot cropped individual stacks if needed for visual check
@@ -348,6 +440,8 @@ if (length(fish_combined_cv_files) > 0) {
   cat("Warning: No CV_Results CSV files found for anemonefish (combined) in", fish_combined_cv_results_dir, "\n")
   anemonefish_combined_cv_data <- NULL
 }
+
+host_model_evals
 
 # The data frames:
 # - host_cv_data (and host_model_evals)
@@ -571,13 +665,13 @@ if (nrow(auc_improvement_df) > 0 &&
     stat_summary(fun = mean, geom = "point", shape = 18, size = 4, color = "black",
                  position = position_dodge(width = 0.6)) +
     labs(
-      title = "AUC Improvement by Host Specialization",
-      subtitle = "Comparing Combined (Host+Env) vs. Environment-Only Models",
-      x = "Anemonefish Specialization Type (≤3 hosts = Specialist; >3 hosts = Generalist)", # Updated X-axis label
-      y = expression(Delta * " AUC (Combined - Env-Only)")
+      title = "AUC Improvement by Host Specialisation",
+      subtitle = "Comparing PCA Only vs. PCA + Host",
+      x = "Anemonefish Specialisation Type", # Updated X-axis label
+      y = expression(Delta * " AUC (PCA + Host)")
     ) +
     scale_fill_manual(values = c("Generalist" = "cornflowerblue", "Specialist" = "darkorange"),
-                      name = "Specialization Type",
+                      name = "Specialisation Type",
                       na.translate = FALSE) +
     theme_bw(base_size = 12) +
     theme(legend.position = "top",
@@ -698,18 +792,41 @@ if (!is.null(df_fish_comparison) && nrow(df_fish_comparison) > 0 && "AUC_test_CV
   print(plot_auc_per_species)
 
   # Print mean AUC per species per model type
-  cat("\nMean AUC_test_CV per species and model type:\n")
-  print(
-    df_fish_comparison %>%
-      group_by(species, model_type) %>%
-      dplyr::summarize(mean_auc = mean(AUC_test_CV, na.rm = TRUE), .groups = 'drop') %>%
-      arrange(species, model_type)
-  )
+  cat("\n--- Mean and Standard Deviation of Test AUC per Anemonefish Species and Model Type ---\n")
+  
+  anemonefish_auc_summary_table <- df_fish_comparison %>%
+    group_by(species, model_type) %>%
+    dplyr::summarize(
+      mean_AUC_test = mean(AUC_test_CV, na.rm = TRUE),
+      sd_AUC_test = sd(AUC_test_CV, na.rm = TRUE),
+      n_CV_folds = n(), # This shows how many CV fold results were averaged
+      .groups = 'drop'
+    ) %>%
+    # Clean up species names for display if they are still Genus_species
+    mutate(species_display = stringr::str_replace(species, "_", " ")) %>% 
+    dplyr::select(Species = species_display, Model_Type = model_type, Mean_AUC = mean_AUC_test, SD_AUC = sd_AUC_test, N_Folds = n_CV_folds) %>%
+    # Optional: Round numeric values
+    mutate(Mean_AUC = round(Mean_AUC, 3),
+           SD_AUC = round(SD_AUC, 3)) %>%
+    arrange(Species, Model_Type)
+
+  if (requireNamespace("knitr", quietly = TRUE)) {
+    print(knitr::kable(anemonefish_auc_summary_table, 
+                       caption = "Mean and Standard Deviation of Test AUC for Anemonefish Models by Species and Type."))
+  } else {
+    print(anemonefish_auc_summary_table)
+  }
+  
+  # Optional: Save this summary table to a CSV
+  anemonefish_cv_summary_path <- file.path(config$base_dir, "outputs_for_analysis", "anemonefish_detailed_CV_summary_auc.csv")
+  dir.create(dirname(anemonefish_cv_summary_path), recursive = TRUE, showWarnings = FALSE)
+  write.csv(anemonefish_auc_summary_table, anemonefish_cv_summary_path, row.names = FALSE)
+  cat("\nAnemonefish detailed CV summary (Mean & SD AUC) saved to:", anemonefish_cv_summary_path, "\n")
+
 
 } else {
   cat("Skipping model comparison as 'df_fish_comparison' is empty or AUC_test_CV is missing.\n")
 }
-
 # (TTS analysis section will be added here once TSS data is available)
 # ... (Code for GLMM and plots for TSS, similar to AUC, but commented out) ...
 ```
