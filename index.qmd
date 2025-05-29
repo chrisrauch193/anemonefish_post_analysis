@@ -452,6 +452,146 @@ if (!is.null(df_fish_comparison) && nrow(df_fish_comparison) > 0) {
 }
 ```
 
+## AUC Improvement by Host Specialization (Broadened Specialist Definition)
+
+This section investigates whether the inclusion of host anemone distribution data (in "combined host+environment" models) provides a differential improvement in predictive performance (Test AUC) compared to "environment-only" models for anemonefish species. Species are classified based on their number of documented host anemones from \`data/processed_anemonefish_host_associations.csv\`: "Specialists" are defined as those associating with 3 or fewer host species, and "Generalists" as those associating with more than 3 host species. We then calculate the AUC improvement for each species and test for significant differences in this improvement between the two specialization groups.
+
+```{r auc-improvement-specialization-broadened}
+#| label: auc-improvement-specialization-broadened
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6
+
+# -------------------------------------------------------------------------------------
+# Section: Compare AUC Improvement for Generalist vs. Specialist Anemonefish
+#          (Specialist = 3 or fewer hosts; Generalist = >3 hosts)
+# -------------------------------------------------------------------------------------
+
+cat("\n--- Defining Anemonefish Specialization (<=3 hosts = Specialist) from CSV and Calculating AUC Improvement ---\n")
+
+# Ensure df_fish_comparison is available and has the required columns
+if (!exists("df_fish_comparison") || is.null(df_fish_comparison) ||
+    !all(c("species", "model_type", "AUC_test_CV") %in% names(df_fish_comparison))) {
+  stop("df_fish_comparison is not available or is missing required columns. Please ensure previous chunks, especially 'collect-fish-model-data', have run successfully.")
+}
+
+# --- Define anemonefish specialization based on the association CSV ---
+association_file_path <- here::here("data", "processed_anemonefish_host_associations.csv")
+
+if (!file.exists(association_file_path)) {
+  stop("Anemonefish-host association file not found at: ", association_file_path)
+}
+
+host_associations_df <- readr::read_csv(association_file_path, show_col_types = FALSE) %>%
+  mutate(AnemonefishScientificName = gsub(" ", "_", AnemonefishScientificName),
+         AssociatedAnemoneScientificName = gsub(" ", "_", AssociatedAnemoneScientificName))
+
+anemonefish_host_counts <- host_associations_df %>%
+  group_by(AnemonefishScientificName) %>%
+  summarise(n_hosts = n_distinct(AssociatedAnemoneScientificName), .groups = "drop")
+
+# Classify based on host count: <=3 hosts = Specialist, >3 hosts = Generalist
+anemonefish_specialization_df <- anemonefish_host_counts %>%
+  mutate(specialization_type = factor(ifelse(n_hosts <= 3, "Specialist", "Generalist"), # Updated condition
+                                 levels = c("Generalist", "Specialist"))) %>%
+  rename(species = AnemonefishScientificName)
+
+cat("\nAnemonefish Specialization (<=3 hosts = Specialist):\n")
+print(anemonefish_specialization_df)
+
+df_fish_comparison_specialization <- df_fish_comparison %>%
+  left_join(anemonefish_specialization_df %>% dplyr::select(species, specialization_type, n_hosts), by = "species")
+
+if(any(is.na(df_fish_comparison_specialization$specialization_type))) {
+  unclassified_species <- unique(df_fish_comparison_specialization$species[is.na(df_fish_comparison_specialization$specialization_type)])
+  cat("\nWarning: The following species from df_fish_comparison were not found in the generated specialization list from the CSV and will have NA for specialization_type:\n",
+      paste(unclassified_species, collapse=", "), "\nThese species will be excluded from specialist vs generalist comparisons.\n")
+  df_fish_comparison_specialization <- df_fish_comparison_specialization %>%
+    filter(!is.na(specialization_type))
+}
+if(nrow(df_fish_comparison_specialization) == 0) {
+    stop("No species remaining after attempting to merge specialization type. Check species name consistency between df_fish_comparison and the association list CSV.")
+}
+
+auc_summary_per_species_model <- df_fish_comparison_specialization %>%
+  filter(model_type %in% c("env_only", "combined_host_env")) %>%
+  group_by(species, specialization_type, n_hosts, model_type) %>%
+  summarise(mean_AUC_test_CV_per_model = mean(AUC_test_CV, na.rm = TRUE), .groups = "drop")
+
+auc_improvement_df <- auc_summary_per_species_model %>%
+  pivot_wider(names_from = model_type, values_from = mean_AUC_test_CV_per_model) %>%
+  filter(!is.na(env_only) & !is.na(combined_host_env)) %>%
+  mutate(AUC_improvement = combined_host_env - env_only) %>%
+  filter(!is.na(AUC_improvement)) %>%
+  arrange(specialization_type, desc(AUC_improvement))
+
+cat("\nAUC Improvement (Combined Model - Environment-Only Model) per Species, with Host Count (Specialist <=3 hosts):\n")
+if(nrow(auc_improvement_df) > 0) {
+  print(as.data.frame(auc_improvement_df))
+} else {
+  cat("No species had AUC values for both 'env_only' and 'combined_host_env' models after filtering. Cannot calculate AUC improvement.\n")
+}
+
+cat("\n--- Statistical Test for Difference in AUC Improvement between Generalist and Specialist (Specialist <=3 hosts) ---\n")
+if (nrow(auc_improvement_df) > 2 &&
+    !all(is.na(auc_improvement_df$specialization_type)) && 
+    length(unique(na.omit(auc_improvement_df$specialization_type))) == 2 &&
+    sum(auc_improvement_df$specialization_type == "Generalist", na.rm = TRUE) > 1 &&
+    sum(auc_improvement_df$specialization_type == "Specialist", na.rm = TRUE) > 1) {
+
+  ttest_auc_improvement <- tryCatch({
+    t.test(AUC_improvement ~ specialization_type, data = auc_improvement_df)
+  }, error = function(e) {
+    cat("Error in t-test for AUC improvement:", e$message, "\nAttempting Wilcoxon test.\n")
+    tryCatch({
+      wilcox.test(AUC_improvement ~ specialization_type, data = auc_improvement_df)
+    }, error = function(e2) {
+      cat("Error in Wilcoxon test as well:", e2$message, "\n"); NULL
+    })
+  })
+
+  cat("Test for difference in AUC Improvement between Generalist and Specialist Anemonefish (Specialist <=3 hosts):\n")
+  if (!is.null(ttest_auc_improvement)) print(ttest_auc_improvement)
+
+} else {
+  cat("Not enough data or distinct groups (Generalist/Specialist with >1 observation each) to perform statistical test on AUC improvement.\n")
+  cat("Number of Generalists with AUC improvement data:", sum(auc_improvement_df$specialization_type == "Generalist", na.rm=TRUE), "\n")
+  cat("Number of Specialists with AUC improvement data:", sum(auc_improvement_df$specialization_type == "Specialist", na.rm=TRUE), "\n")
+  cat("Unique specialization types found in auc_improvement_df:", paste(unique(na.omit(auc_improvement_df$specialization_type)), collapse=", "), "\n")
+}
+
+cat("\n--- Boxplot of AUC Improvement by Specialization Type (Specialist <=3 hosts) ---\n")
+if (nrow(auc_improvement_df) > 0 && 
+    !all(is.na(auc_improvement_df$specialization_type)) &&
+    length(unique(na.omit(auc_improvement_df$specialization_type))) > 0) { 
+  plot_auc_improvement <- ggplot(auc_improvement_df, aes(x = specialization_type, y = AUC_improvement, fill = specialization_type)) +
+    geom_boxplot(alpha = 0.8, width=0.6, outlier.shape = NA) +
+    geom_jitter(width = 0.15, alpha = 0.6, size=2.5) + 
+    stat_summary(fun = mean, geom = "point", shape = 18, size = 4, color = "black",
+                 position = position_dodge(width = 0.6)) +
+    labs(
+      title = "AUC Improvement by Host Specialization",
+      subtitle = "Comparing Combined (Host+Env) vs. Environment-Only Models",
+      x = "Anemonefish Specialization Type (≤3 hosts = Specialist; >3 hosts = Generalist)", # Updated X-axis label
+      y = expression(Delta * " AUC (Combined - Env-Only)")
+    ) +
+    scale_fill_manual(values = c("Generalist" = "cornflowerblue", "Specialist" = "darkorange"),
+                      name = "Specialization Type",
+                      na.translate = FALSE) +
+    theme_bw(base_size = 12) +
+    theme(legend.position = "top",
+          axis.text.x = element_text(size=11, face="bold"),
+          plot.title = element_text(hjust = 0.5, face="bold"),
+          plot.subtitle = element_text(hjust = 0.5),
+          panel.grid.major.x = element_blank())
+  
+  print(plot_auc_improvement)
+} else {
+  cat("No data to plot for AUC improvement after processing (e.g., all species might be unclassified or only one type present).\n")
+}
+```
+
 ## Compare anemonefish model performance
 
 This section statistically compares the performance (test AUC) of the different anemonefish model types (environmental-only, biotic-only, combined host+environment) using a linear mixed model. It also visualizes these comparisons.
@@ -1257,6 +1397,289 @@ suitability_shifts_list
 # The `suitability_shifts_list` object is now populated.
 # Example access: suitability_shifts_list[["hosts_ssp119_2050"]]
 # It will contain data frames with rownames = species_name_sanitized and a column "mean" for the shift.
+```
+
+## Future Host-Anemonefish Overlap Changes by Specialization
+
+This section analyzes the projected changes in niche overlap (Schoener's D) between anemonefish and their host anemones under future climate scenarios, considering the specialization strategy of the anemonefish. For **Specialist** anemonefish (≤3 documented hosts), we calculate the change in overlap with their specific documented host(s). If a specialist uses multiple hosts (2 or 3), the average overlap change is considered. For **Generalist** anemonefish (\>3 documented hosts), we calculate the change in overlap with a composite raster representing the presence of *any* of their documented host anemones. This approach aims to quantify how the availability of suitable host partners might change differently for specialist versus generalist anemonefish.
+
+```{r future-host-fish-overlap-specialization}
+#| label: future-host-fish-overlap-specialization-final
+#| message: false
+#| warning: false
+#| fig-width: 11 # Adjusted for potentially wider facets
+#| fig-height: 7
+
+cat("\n--- Calculating Future Host-Anemonefish Overlap Changes by Specialization (Final Version) ---\n")
+
+# Ensure raster package is loaded
+if (!requireNamespace("raster", quietly = TRUE)) {
+  install.packages("raster")
+}
+library(raster) # For raster::stack()
+
+# --- Prerequisite Checks ---
+required_objects <- c("host_pred_stack_cropped", "fish_pred_stack_cropped",
+                      "host_pred_stacks_future_individual", "fish_pred_stacks_future_individual",
+                      "anemonefish_specialization_df", "host_associations_df",
+                      "future_scenarios_to_load", "config", "scenario_label_converter")
+for (obj_name in required_objects) {
+  if (!exists(obj_name) || is.null(get(obj_name))) {
+    stop(paste("Prerequisite object '", obj_name, "' not found or is NULL. Ensure previous chunks have run successfully.", sep=""))
+  }
+}
+if(!is.list(host_pred_stacks_future_individual) || !is.list(fish_pred_stacks_future_individual)){
+    stop("Future individual prediction stacks must be lists.")
+}
+
+# --- Initialize results dataframe ---
+overlap_change_results_list <- list()
+
+current_anemonefish_names <- names(fish_pred_stack_cropped)
+current_host_names <- names(host_pred_stack_cropped)
+
+# --- Loop through each anemonefish species ---
+for (fish_species_name in current_anemonefish_names) {
+
+  cat("\nProcessing Anemonefish:", fish_species_name, "\n")
+
+  fish_specialization_info <- anemonefish_specialization_df %>% filter(species == fish_species_name)
+  if (nrow(fish_specialization_info) == 0) {
+    cat("  Warning: No specialization info found for", fish_species_name, ". Skipping.\n")
+    next
+  }
+  specialization_type <- fish_specialization_info$specialization_type[1]
+
+  current_fish_raster_orig <- fish_pred_stack_cropped[[fish_species_name]]
+  if (is.null(current_fish_raster_orig)) {
+    cat("  Warning: Current prediction raster not found for", fish_species_name, ". Skipping.\n")
+    next
+  }
+
+  documented_hosts <- host_associations_df %>%
+    filter(AnemonefishScientificName == fish_species_name) %>%
+    pull(AssociatedAnemoneScientificName) %>%
+    unique()
+  documented_hosts <- intersect(documented_hosts, current_host_names)
+
+  if (length(documented_hosts) == 0) {
+    cat("  Warning: No documented hosts found (or hosts not in current_host_names) for", fish_species_name, ". Skipping.\n")
+    next
+  }
+
+  current_overlaps_d_values <- c()
+
+  if (specialization_type == "Specialist") {
+    for (host_name in documented_hosts) {
+      current_host_raster_single_orig <- host_pred_stack_cropped[[host_name]]
+      if (!is.null(current_host_raster_single_orig)) {
+        current_fish_raster_comp <- current_fish_raster_orig
+        current_host_raster_single_comp <- current_host_raster_single_orig
+        if(!terra::compareGeom(current_fish_raster_comp, current_host_raster_single_comp, stopOnError=FALSE, res=TRUE,crs=TRUE,ext=TRUE)){
+            current_host_raster_single_comp <- terra::resample(current_host_raster_single_comp, current_fish_raster_comp, method="bilinear")
+        }
+        overlap_stack_curr_terra <- c(current_fish_raster_comp, current_host_raster_single_comp)
+        names(overlap_stack_curr_terra) <- c(fish_species_name, host_name)
+        overlap_stack_curr_raster <- raster::stack(overlap_stack_curr_terra)
+        current_overlaps_d_values <- c(current_overlaps_d_values, ENMeval::calc.niche.overlap(overlap_stack_curr_raster, "D")[1,2])
+      }
+    }
+    mean_current_overlap_d <- ifelse(length(current_overlaps_d_values) > 0, mean(current_overlaps_d_values, na.rm = TRUE), NA_real_)
+  } else { # Generalist
+    current_generalist_host_rasters_list <- list()
+    for(hn in documented_hosts){
+        if(!is.null(host_pred_stack_cropped[[hn]])){
+            current_generalist_host_rasters_list[[hn]] <- host_pred_stack_cropped[[hn]]
+        }
+    }
+    if (length(current_generalist_host_rasters_list) > 0) {
+        temp_host_stack <- terra::rast(current_generalist_host_rasters_list)
+        processed_host_stack_for_composite <- temp_host_stack # Initialize
+        if(terra::nlyr(temp_host_stack) > 0) { # Ensure there are layers to process
+            resampled_layers_for_composite <- list()
+            for(k in 1:terra::nlyr(temp_host_stack)){
+                layer_k <- temp_host_stack[[k]]
+                if(!terra::compareGeom(current_fish_raster_orig, layer_k, stopOnError=FALSE, res=TRUE,crs=TRUE,ext=TRUE)){
+                    layer_k <- terra::resample(layer_k, current_fish_raster_orig, method="bilinear")
+                }
+                resampled_layers_for_composite[[k]] <- layer_k
+            }
+            processed_host_stack_for_composite <- rast(resampled_layers_for_composite)
+        }
+      composite_current_host_raster <- max(processed_host_stack_for_composite, na.rm = TRUE)
+      names(composite_current_host_raster) <- "CompositeHost"
+      current_fish_raster_comp <- current_fish_raster_orig
+      overlap_stack_curr_terra <- c(current_fish_raster_comp, composite_current_host_raster)
+      names(overlap_stack_curr_terra) <- c(fish_species_name, "CompositeHost")
+      overlap_stack_curr_raster <- raster::stack(overlap_stack_curr_terra)
+      mean_current_overlap_d <- ENMeval::calc.niche.overlap(overlap_stack_curr_raster, "D")[1,2]
+    } else {
+      mean_current_overlap_d <- NA_real_
+    }
+  }
+
+  for (scenario_name in future_scenarios_to_load) {
+    cat("    Scenario:", scenario_name, "\n")
+    future_fish_raster_orig <- fish_pred_stacks_future_individual[[scenario_name]][[fish_species_name]]
+    future_host_rasters_all_orig <- host_pred_stacks_future_individual[[scenario_name]]
+
+    if (is.null(future_fish_raster_orig) || is.null(future_host_rasters_all_orig)) {
+      cat("      Warning: Future fish or host stack missing for scenario", scenario_name, "and fish", fish_species_name, ". Skipping.\n")
+      next
+    }
+
+    future_overlaps_d_values <- c()
+    if (specialization_type == "Specialist") {
+      for (host_name in documented_hosts) {
+        future_host_raster_single_orig <- future_host_rasters_all_orig[[host_name]]
+        if (!is.null(future_host_raster_single_orig)) {
+            future_fish_raster_comp <- future_fish_raster_orig
+            future_host_raster_single_comp <- future_host_raster_single_orig
+            if(!terra::compareGeom(future_fish_raster_comp, future_host_raster_single_comp, stopOnError=FALSE, res=TRUE,crs=TRUE,ext=TRUE)){
+                future_host_raster_single_comp <- terra::resample(future_host_raster_single_comp, future_fish_raster_comp, method="bilinear")
+            }
+          overlap_stack_fut_terra <- c(future_fish_raster_comp, future_host_raster_single_comp)
+          names(overlap_stack_fut_terra) <- c(fish_species_name, host_name)
+          overlap_stack_fut_raster <- raster::stack(overlap_stack_fut_terra)
+          future_overlaps_d_values <- c(future_overlaps_d_values, ENMeval::calc.niche.overlap(overlap_stack_fut_raster, "D")[1,2])
+        }
+      }
+      mean_future_overlap_d <- ifelse(length(future_overlaps_d_values) > 0, mean(future_overlaps_d_values, na.rm = TRUE), NA_real_)
+    } else { # Generalist
+      future_generalist_host_rasters_list <- list()
+        for(hn in documented_hosts){
+            if(!is.null(future_host_rasters_all_orig[[hn]])){
+                future_generalist_host_rasters_list[[hn]] <- future_host_rasters_all_orig[[hn]]
+            }
+        }
+      if (length(future_generalist_host_rasters_list) > 0) {
+          temp_fut_host_stack <- rast(future_generalist_host_rasters_list)
+          processed_fut_host_stack_for_composite <- temp_fut_host_stack # Initialize
+          if(terra::nlyr(temp_fut_host_stack) > 0 ) { # Ensure there are layers
+              resampled_fut_layers_for_composite <- list()
+              for(k in 1:terra::nlyr(temp_fut_host_stack)){
+                  layer_k_fut <- temp_fut_host_stack[[k]]
+                  if(!terra::compareGeom(future_fish_raster_orig, layer_k_fut, stopOnError=FALSE, res=TRUE,crs=TRUE,ext=TRUE)){
+                      layer_k_fut <- terra::resample(layer_k_fut, future_fish_raster_orig, method="bilinear")
+                  }
+                  resampled_fut_layers_for_composite[[k]] <- layer_k_fut
+              }
+              processed_fut_host_stack_for_composite <- rast(resampled_fut_layers_for_composite)
+          }
+        composite_future_host_raster <- max(processed_fut_host_stack_for_composite, na.rm = TRUE)
+        names(composite_future_host_raster) <- "CompositeHost"
+        future_fish_raster_comp <- future_fish_raster_orig
+        overlap_stack_fut_terra <- c(future_fish_raster_comp, composite_future_host_raster)
+        names(overlap_stack_fut_terra) <- c(fish_species_name, "CompositeHost")
+        overlap_stack_fut_raster <- raster::stack(overlap_stack_fut_terra)
+        mean_future_overlap_d <- ENMeval::calc.niche.overlap(overlap_stack_fut_raster, "D")[1,2]
+      } else {
+        mean_future_overlap_d <- NA_real_
+      }
+    }
+
+    overlap_change <- ifelse(!is.na(mean_future_overlap_d) && !is.na(mean_current_overlap_d),
+                             mean_future_overlap_d - mean_current_overlap_d,
+                             NA_real_)
+
+    overlap_change_results_list[[length(overlap_change_results_list) + 1]] <- data.frame(
+      anemonefish_species = fish_species_name,
+      specialization_type = specialization_type,
+      n_documented_hosts = length(documented_hosts),
+      scenario = scenario_name,
+      current_overlap_D = mean_current_overlap_d,
+      future_overlap_D = mean_future_overlap_d,
+      change_in_overlap_D = overlap_change
+    )
+  }
+}
+
+all_overlap_changes_df <- dplyr::bind_rows(overlap_change_results_list)
+
+# --- Debugging and Plotting ---
+cat("\n--- Debugging data for plot_overlap_change ---\n")
+cat("Number of rows in all_overlap_changes_df before filtering NA change_in_overlap_D:", nrow(all_overlap_changes_df), "\n")
+if(nrow(all_overlap_changes_df) > 0) {
+  cat("Summary of change_in_overlap_D before filtering:\n")
+  print(summary(all_overlap_changes_df$change_in_overlap_D))
+  cat("Table of scenarios before filtering change_in_overlap_D:\n")
+  print(table(all_overlap_changes_df$scenario, useNA="ifany"))
+  cat("Table of specialization_type before filtering change_in_overlap_D:\n")
+  print(table(all_overlap_changes_df$specialization_type, useNA="ifany"))
+}
+
+data_for_plot <- all_overlap_changes_df %>% filter(!is.na(change_in_overlap_D))
+cat("\nNumber of rows in data_for_plot (after filtering NA change_in_overlap_D):", nrow(data_for_plot), "\n")
+
+if(nrow(data_for_plot) > 0) {
+  cat("Table of scenarios in data_for_plot:\n")
+  print(table(data_for_plot$scenario, useNA="ifany"))
+  cat("Table of specialization_type in data_for_plot:\n")
+  print(table(data_for_plot$specialization_type, useNA="ifany"))
+  cat("First few rows of data_for_plot:\n")
+  print(head(data_for_plot))
+
+  summary_overlap_change <- data_for_plot %>% # Use filtered data for summary too
+    group_by(scenario, specialization_type) %>%
+    summarise(
+      mean_change_D = mean(change_in_overlap_D, na.rm = TRUE), # na.rm = TRUE still good practice
+      sd_change_D = sd(change_in_overlap_D, na.rm = TRUE),
+      n_species_in_group = n_distinct(anemonefish_species),
+      .groups = "drop"
+    ) %>% arrange(scenario, specialization_type)
+  cat("\nSummary of Mean Change in Schoener's D Overlap by Specialization and Scenario (from filtered data):\n")
+  print(summary_overlap_change)
+
+  plot_overlap_change <- ggplot(data_for_plot,
+                                aes(x = specialization_type, y = change_in_overlap_D, fill = specialization_type)) +
+    geom_boxplot(alpha = 0.8, outlier.shape = NA, width=0.7) +
+    geom_jitter(width = 0.15, alpha = 0.5, size = 2) +
+    stat_summary(fun = mean, geom = "point", shape = 18, size = 3.5, color = "black",
+                 position = position_dodge(width = 0.75)) +
+    facet_wrap(~ scenario, labeller = labeller(scenario = scenario_label_converter), scales="free_y") +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    labs(
+      title = "Change in Host-Anemonefish Niche Overlap (Schoener's D)",
+      subtitle = "Future vs. Current, by Anemonefish Specialization",
+      x = "Anemonefish Specialization Type (≤3 hosts = Specialist; >3 hosts = Generalist)",
+      y = expression(Delta * " Schoener's D (Future - Current)")
+    ) +
+    scale_fill_manual(values = c("Generalist" = "cornflowerblue", "Specialist" = "darkorange"),
+                      name = "Specialization") +
+    theme_bw(base_size = 11) +
+    theme(legend.position = "top",
+          axis.text.x = element_text(angle = 45, hjust = 1, face="bold"),
+          plot.title = element_text(hjust=0.5, face="bold"),
+          plot.subtitle = element_text(hjust=0.5),
+          strip.text = element_text(face="bold", size=10))
+  print(plot_overlap_change)
+
+  # Statistical test
+  example_scenario_for_test <- future_scenarios_to_load[1]
+  test_data_overlap_change <- data_for_plot %>%
+    filter(scenario == example_scenario_for_test)
+
+  if (nrow(test_data_overlap_change) > 2 &&
+      !all(is.na(test_data_overlap_change$specialization_type)) &&
+      length(unique(na.omit(test_data_overlap_change$specialization_type))) == 2 &&
+      sum(test_data_overlap_change$specialization_type == "Generalist", na.rm=TRUE) > 1 &&
+      sum(test_data_overlap_change$specialization_type == "Specialist", na.rm=TRUE) > 1 ) {
+
+    cat(paste0("\n--- T-test for Change in Overlap D (", scenario_label_converter[example_scenario_for_test], ") between Generalists and Specialists ---\n"))
+    ttest_overlap_change <- t.test(change_in_overlap_D ~ specialization_type, data = test_data_overlap_change)
+    print(ttest_overlap_change)
+  } else {
+    cat(paste0("\nNot enough data for t-test on overlap change for scenario: ", example_scenario_for_test, "\n"))
+    if(nrow(test_data_overlap_change) > 0){
+        cat("  N Generalist:", sum(test_data_overlap_change$specialization_type == "Generalist", na.rm=TRUE),
+            " N Specialist:", sum(test_data_overlap_change$specialization_type == "Specialist", na.rm=TRUE), "\n")
+    } else {
+        cat("  No data for this scenario after filtering NAs in change_in_overlap_D.\n")
+    }
+  }
+} else {
+  cat("No overlap change results to display or summarize after filtering NAs.\n")
+}
 ```
 
 ## Relationship between Host and Anemonefish Richness (Current)
@@ -2254,20 +2677,16 @@ if (nrow(host_niche_breadth_df) > 1 && nrow(fish_niche_breadth_df) > 1) {
 # They contain species names and their Levin's B1 and B2 values.
 ```
 
-## Correlation between Niche Breadth and Suitability Shifts
+## Niche Breadth vs. Suitability Shifts: A Comparative Analysis
 
-This section investigates whether a species' current niche breadth (Levin's $B_2$) is correlated with its projected mean change in environmental suitability under future climate scenarios.
+This section explores the relationship between current environmental niche breadth (Levin's B2) and projected mean suitability shifts under future climate scenarios. The analysis is performed separately for host sea anemones and for anemonefish. For anemonefish, a further distinction is made based on their host specialization (Generalist: \>3 host species; Specialist: ≤3 host species) to investigate if the degree of host dependency influences their response patterns. Correlation tests are performed for each group and scenario, and the relationships are visualized to identify potential links between a species' current niche characteristics and its vulnerability or resilience to environmental change.
 
 ```{r breadth-suitability-correlation}
-#| label: breadth-suitability-correlation
+#| label: breadth-suitability-correlation-specialization
 #| message: false
 #| warning: false
-#| fig-width: 10
-#| fig-height: 5
-
-library(dplyr)
-library(ggplot2)
-library(tidyr) # For pivot_wider if needed
+#| fig-width: 12 # Might need to adjust depending on final plot layout
+#| fig-height: 8  # Might need to adjust
 
 # --- Ensure prerequisite data is available ---
 if (!exists("host_niche_breadth_df") || !exists("fish_niche_breadth_df")) {
@@ -2280,71 +2699,76 @@ if (!exists("future_scenarios_to_load") || length(future_scenarios_to_load) == 0
   future_scenarios_to_load <- config$env_scenarios[config$env_scenarios != "current"]
   if (length(future_scenarios_to_load) == 0) stop("No future scenarios defined.")
 }
-
+# Ensure anemonefish_specialization_df from Chunk A is available
+if (!exists("anemonefish_specialization_df") || is.null(anemonefish_specialization_df)) {
+  stop("`anemonefish_specialization_df` not found. Ensure the 'AUC Improvement by Host Specialization' chunk has run.")
+}
 
 # --- 1. Prepare Host Anemone Data (Breadth and Shifts) ---
 cat("--- Processing Host Anemone Breadth vs. Suitability Shift ---\n")
+host_breadth_shifts_df_final <- NULL # Initialize
 if (nrow(host_niche_breadth_df) > 0) {
-  # Start with breadth data
-  host_breadth_shifts_df <- host_niche_breadth_df %>%
+  host_breadth_shifts_df_temp <- host_niche_breadth_df %>%
     dplyr::select(species_name_sanitized, breadth_B2 = levins_B2)
 
-  # Add shift data for each future scenario
   for (scenario_name in future_scenarios_to_load) {
     shift_data_name <- paste0("hosts_", scenario_name)
+    shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name))
+    
     if (shift_data_name %in% names(suitability_shifts_list) && 
         !is.null(suitability_shifts_list[[shift_data_name]]) &&
         nrow(suitability_shifts_list[[shift_data_name]]) > 0) {
       
       temp_shift_df <- suitability_shifts_list[[shift_data_name]] %>%
-        as.data.frame() %>% # Ensure it's a data frame
+        as.data.frame() %>%
         tibble::rownames_to_column("species_name_sanitized") %>%
         dplyr::select(species_name_sanitized, mean_suitability_shift = mean)
       
-      # Dynamically create column name for the shift in this scenario
-      shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name)) # e.g., shift_119_2050
-      
-      host_breadth_shifts_df <- host_breadth_shifts_df %>%
+      host_breadth_shifts_df_temp <- host_breadth_shifts_df_temp %>%
         left_join(temp_shift_df %>% rename(!!shift_col_name := mean_suitability_shift), 
                   by = "species_name_sanitized")
     } else {
-      cat("  Warning: Shift data for hosts in scenario '", scenario_name, "' not found or empty.\n")
+      cat("  Warning: Shift data for hosts in scenario '", scenario_name, "' (", shift_data_name, ") not found or empty. Column '", shift_col_name, "' will be NA.\n")
+      host_breadth_shifts_df_temp[[shift_col_name]] <- NA_real_
     }
   }
-  
-  host_breadth_shifts_df <- host_breadth_shifts_df %>% filter(!is.na(breadth_B2))
+  host_breadth_shifts_df_final <- host_breadth_shifts_df_temp %>% filter(!is.na(breadth_B2))
   cat("Host anemone data prepared for breadth vs. shift analysis:\n")
-  print(head(host_breadth_shifts_df))
+  print(head(host_breadth_shifts_df_final))
 
-  # Perform correlations for each future scenario for hosts
+  # Perform and print correlations for hosts
   for (scenario_name in future_scenarios_to_load) {
     shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name))
-    if (shift_col_name %in% names(host_breadth_shifts_df)) {
-      # Ensure there are enough non-NA pairs for correlation
-      temp_df_cor_host <- host_breadth_shifts_df %>% dplyr::select(breadth_B2, !!sym(shift_col_name)) %>% na.omit()
+    if (shift_col_name %in% names(host_breadth_shifts_df_final)) {
+      temp_df_cor_host <- host_breadth_shifts_df_final %>% dplyr::select(breadth_B2, !!sym(shift_col_name)) %>% na.omit()
       if(nrow(temp_df_cor_host) > 2) {
         cor_test_host <- cor.test(temp_df_cor_host$breadth_B2, temp_df_cor_host[[shift_col_name]], method = "pearson")
-        cat("\nCorrelation (Host Anemones) - Breadth vs. Shift (", scenario_name, "):\n")
+        cat("\nCorrelation (Host Anemones) - Breadth vs. Shift (", scenario_name, " / ", shift_col_name, "):\n")
         print(cor_test_host)
       } else {
-        cat("\nNot enough data points to calculate correlation for hosts in scenario:", scenario_name, "\n")
+        cat("\nNot enough data points to calculate correlation for hosts in scenario:", scenario_name, "(column:", shift_col_name, ")\n")
       }
     }
   }
 } else {
   cat("No host niche breadth data available.\n")
-  host_breadth_shifts_df <- NULL
 }
 
 
-# --- 2. Prepare Anemonefish (Env-Only) Data (Breadth and Shifts) ---
-cat("\n--- Processing Anemonefish (Env-Only) Breadth vs. Suitability Shift ---\n")
+# --- 2. Prepare Anemonefish (Env-Only) Data (Breadth, Shifts, and Specialization) ---
+cat("\n--- Processing Anemonefish (Env-Only) Breadth vs. Suitability Shift with Specialization ---\n")
+fish_breadth_shifts_df_final <- NULL # Initialize
 if (nrow(fish_niche_breadth_df) > 0) {
-  fish_breadth_shifts_df <- fish_niche_breadth_df %>%
-    dplyr::select(species_name_sanitized, breadth_B2 = levins_B2)
+  fish_breadth_shifts_df_temp <- fish_niche_breadth_df %>%
+    dplyr::select(species_name_sanitized, breadth_B2 = levins_B2) %>%
+    # Merge with specialization type (species names should match after underscore conversion in previous chunk)
+    left_join(anemonefish_specialization_df %>% dplyr::select(species, specialization_type, n_hosts), 
+              by = c("species_name_sanitized" = "species"))
 
   for (scenario_name in future_scenarios_to_load) {
     shift_data_name <- paste0("fish_env_only_", scenario_name)
+    shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name))
+    
     if (shift_data_name %in% names(suitability_shifts_list) && 
         !is.null(suitability_shifts_list[[shift_data_name]]) &&
         nrow(suitability_shifts_list[[shift_data_name]]) > 0) {
@@ -2354,88 +2778,114 @@ if (nrow(fish_niche_breadth_df) > 0) {
         tibble::rownames_to_column("species_name_sanitized") %>%
         dplyr::select(species_name_sanitized, mean_suitability_shift = mean)
         
-      shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name))
-      
-      fish_breadth_shifts_df <- fish_breadth_shifts_df %>%
+      fish_breadth_shifts_df_temp <- fish_breadth_shifts_df_temp %>%
         left_join(temp_shift_df_fish %>% rename(!!shift_col_name := mean_suitability_shift), 
                   by = "species_name_sanitized")
     } else {
-      cat("  Warning: Shift data for anemonefish (env-only) in scenario '", scenario_name, "' not found or empty.\n")
+      cat("  Warning: Shift data for anemonefish (env-only) in scenario '", scenario_name, "' (", shift_data_name, ") not found or empty. Column '", shift_col_name, "' will be NA.\n")
+      fish_breadth_shifts_df_temp[[shift_col_name]] <- NA_real_
     }
   }
   
-  fish_breadth_shifts_df <- fish_breadth_shifts_df %>% filter(!is.na(breadth_B2))
-  cat("Anemonefish (env-only) data prepared for breadth vs. shift analysis:\n")
-  print(head(fish_breadth_shifts_df))
+  fish_breadth_shifts_df_final <- fish_breadth_shifts_df_temp %>% 
+    filter(!is.na(breadth_B2), !is.na(specialization_type)) # Also filter out if specialization type is NA
+    
+  cat("Anemonefish (env-only) data prepared for breadth vs. shift analysis (with specialization):\n")
+  print(head(fish_breadth_shifts_df_final))
 
-  # Perform correlations for each future scenario for fish
+  # Perform and print correlations for fish, separately for Generalists and Specialists
   for (scenario_name in future_scenarios_to_load) {
     shift_col_name <- paste0("shift_", gsub("ssp", "", scenario_name))
-    if (shift_col_name %in% names(fish_breadth_shifts_df)) {
-      temp_df_cor_fish <- fish_breadth_shifts_df %>% dplyr::select(breadth_B2, !!sym(shift_col_name)) %>% na.omit()
-      if(nrow(temp_df_cor_fish) > 2){
-        cor_test_fish <- cor.test(temp_df_cor_fish$breadth_B2, temp_df_cor_fish[[shift_col_name]], method = "pearson")
-        cat("\nCorrelation (Anemonefish Env-Only) - Breadth vs. Shift (", scenario_name, "):\n")
-        print(cor_test_fish)
+    if (shift_col_name %in% names(fish_breadth_shifts_df_final)) {
+      
+      cat("\nCorrelations (Anemonefish Env-Only) - Breadth vs. Shift (", scenario_name, " / ", shift_col_name, "):\n")
+      
+      # Generalists
+      temp_df_cor_fish_gen <- fish_breadth_shifts_df_final %>% 
+        filter(specialization_type == "Generalist") %>%
+        dplyr::select(breadth_B2, !!sym(shift_col_name)) %>% na.omit()
+      if(nrow(temp_df_cor_fish_gen) > 2) {
+        cor_test_fish_gen <- cor.test(temp_df_cor_fish_gen$breadth_B2, temp_df_cor_fish_gen[[shift_col_name]], method = "pearson")
+        cat("  Generalists:\n")
+        print(cor_test_fish_gen)
       } else {
-         cat("\nNot enough data points to calculate correlation for fish in scenario:", scenario_name, "\n")
+        cat("  Not enough data points for Generalists in scenario:", scenario_name, "(column:", shift_col_name, ")\n")
+      }
+      
+      # Specialists
+      temp_df_cor_fish_spec <- fish_breadth_shifts_df_final %>% 
+        filter(specialization_type == "Specialist") %>%
+        dplyr::select(breadth_B2, !!sym(shift_col_name)) %>% na.omit()
+      if(nrow(temp_df_cor_fish_spec) > 2){
+        cor_test_fish_spec <- cor.test(temp_df_cor_fish_spec$breadth_B2, temp_df_cor_fish_spec[[shift_col_name]], method = "pearson")
+        cat("  Specialists:\n")
+        print(cor_test_fish_spec)
+      } else {
+        cat("  Not enough data points for Specialists in scenario:", scenario_name, "(column:", shift_col_name, ")\n")
       }
     }
   }
 } else {
   cat("No anemonefish (env-only) niche breadth data available.\n")
-  fish_breadth_shifts_df <- NULL
 }
 
-# --- 3. Prepare data for combined plotting (similar to ant paper's all_bre) ---
-# This creates a long-format data frame for easier ggplotting with facets or colors
-all_breadth_shifts_long_df <- NULL
-
-if (!is.null(host_breadth_shifts_df) && nrow(host_breadth_shifts_df) > 0) {
-  host_plot_df <- host_breadth_shifts_df %>% 
-    pivot_longer(cols = starts_with("shift_"), names_to = "scenario_shift_code", values_to = "suitability_shift") %>%
-    mutate(guild = "Host Anemone")
-  all_breadth_shifts_long_df <- bind_rows(all_breadth_shifts_long_df, host_plot_df)
+# --- 3. Prepare data for combined plotting ---
+all_breadth_shifts_long_df_final <- NULL
+if (!is.null(host_breadth_shifts_df_final) && nrow(host_breadth_shifts_df_final) > 0) {
+  host_plot_df_final <- host_breadth_shifts_df_final %>% 
+    pivot_longer(cols = starts_with("shift_"), 
+                 names_to = "scenario_shift_code", 
+                 values_to = "suitability_shift") %>%
+    mutate(guild = "Host Anemone",
+           specialization_type = "Host") # Add a dummy specialization for faceting
+  all_breadth_shifts_long_df_final <- bind_rows(all_breadth_shifts_long_df_final, host_plot_df_final)
 }
-if (!is.null(fish_breadth_shifts_df) && nrow(fish_breadth_shifts_df) > 0) {
-  fish_plot_df <- fish_breadth_shifts_df %>%
-    pivot_longer(cols = starts_with("shift_"), names_to = "scenario_shift_code", values_to = "suitability_shift") %>%
-    mutate(guild = "Anemonefish")
-  all_breadth_shifts_long_df <- bind_rows(all_breadth_shifts_long_df, fish_plot_df)
+if (!is.null(fish_breadth_shifts_df_final) && nrow(fish_breadth_shifts_df_final) > 0) {
+  fish_plot_df_final <- fish_breadth_shifts_df_final %>%
+    pivot_longer(cols = starts_with("shift_"), 
+                 names_to = "scenario_shift_code", 
+                 values_to = "suitability_shift") %>%
+    mutate(guild = "Anemonefish") # Specialization type is already there
+  all_breadth_shifts_long_df_final <- bind_rows(all_breadth_shifts_long_df_final, fish_plot_df_final)
 }
 
-if (!is.null(all_breadth_shifts_long_df) && nrow(all_breadth_shifts_long_df) > 0) {
-  all_breadth_shifts_long_df <- all_breadth_shifts_long_df %>%
+if (!is.null(all_breadth_shifts_long_df_final) && nrow(all_breadth_shifts_long_df_final) > 0) {
+  all_breadth_shifts_long_df_final <- all_breadth_shifts_long_df_final %>%
     filter(!is.na(breadth_B2), !is.na(suitability_shift)) %>%
-    # Recreate a more descriptive scenario name for plotting
     mutate(scenario_display = str_replace_all(scenario_shift_code, 
-                                             c("shift_" = "SSP", "_" = "-", "dec50" = "(2050)", "dec100" = "(2100)"))) 
+                                             c("shift_" = "SSP", "_" = "-", "dec50" = "(2050)", "dec100" = "(2100)"))) %>%
+    mutate(facet_group = paste(guild, specialization_type, sep=" - ")) # For faceting
+
+  cat("\nCombined long format data for plotting breadth vs. suitability shift (with specialization):\n")
+  print(head(all_breadth_shifts_long_df_final))
   
-  cat("\nCombined long format data for plotting breadth vs. suitability shift:\n")
-  print(head(all_breadth_shifts_long_df))
-  
-  # Plotting (example for all scenarios faceted by scenario and guild)
-  plot_breadth_vs_shift <- ggplot(all_breadth_shifts_long_df, aes(x = suitability_shift, y = breadth_B2)) +
-    geom_point(alpha = 0.7) +
-    geom_smooth(method = "lm", se = TRUE, aes(color = guild), linetype="dashed") + # Add se and color by guild
-    facet_grid(guild ~ scenario_display, scales = "free_x") + # Facet by guild and scenario
+  plot_breadth_vs_shift_specialization <- ggplot(all_breadth_shifts_long_df_final, 
+                                               aes(x = suitability_shift, y = breadth_B2)) +
+    geom_point(alpha = 0.7, aes(color = specialization_type)) + # Color points by specialization_type
+    geom_smooth(method = "lm", se = TRUE, aes(linetype = specialization_type, color=specialization_type)) + # Separate lines
+    facet_wrap(~ scenario_display + guild, scales = "free_x", ncol=length(unique(all_breadth_shifts_long_df_final$scenario_display))) +
     labs(
       title = "Niche Breadth (Levin's B2) vs. Mean Suitability Shift",
       x = "Mean Change in Suitability (Future - Current)",
       y = "Levin's B2 (Niche Breadth)"
     ) +
+    scale_color_manual(values = c("Generalist" = "cornflowerblue", "Specialist" = "darkorange", "Host"="seagreen"), name = "Group") +
+    scale_linetype_manual(values = c("Generalist" = "dashed", "Specialist" = "dotted", "Host"="solid"), name = "Group") +
     theme_bw(base_size = 10) +
-    theme(strip.text = element_text(size = 8),
-          legend.position = "bottom")
+    theme(strip.text = element_text(size = 7),
+          legend.position = "bottom",
+          plot.title = element_text(hjust=0.5, face="bold"),
+          plot.subtitle = element_text(hjust=0.5))
   
-  print(plot_breadth_vs_shift)
+  print(plot_breadth_vs_shift_specialization)
   
 } else {
-  cat("Not enough combined data to plot breadth vs. suitability shifts.\n")
+  cat("Not enough combined data to plot breadth vs. suitability shifts with specialization.\n")
 }
 
-# The data frames `host_breadth_shifts_df`, `fish_breadth_shifts_df`, 
-# and `all_breadth_shifts_long_df` are now available.
+# Note: The individual plots for Host and Fish from 'Figure: Niche Breadth vs. Suitability Shift' 
+# can still be generated as before if desired, or this combined plot can replace them.
+# The key new part is the separate correlation tests for generalist/specialist anemonefish.
 ```
 
 ### Figure: Niche Breadth vs. Suitability Shift
@@ -2453,30 +2903,30 @@ library(ggplot2)
 library(cowplot) # For plot_grid
 
 # --- Choose ONE future scenario for this figure ---
-# This should match one of the columns created in host_breadth_shifts_df and fish_breadth_shifts_df
-# e.g., "shift_585_2100" (derived from "ssp585_2100")
+# This should match one of the columns created in the _final dataframes
 chosen_scenario_for_figure <- "shift_585_2100" # CHANGE AS NEEDED
 
 plot_a_host <- NULL
 plot_b_fish <- NULL
 
 # --- Host Anemones Plot ---
-if (!is.null(host_breadth_shifts_df) && chosen_scenario_for_figure %in% names(host_breadth_shifts_df) && "breadth_B2" %in% names(host_breadth_shifts_df)) {
+# Use the _final dataframe name here
+if (!is.null(host_breadth_shifts_df_final) && chosen_scenario_for_figure %in% names(host_breadth_shifts_df_final) && "breadth_B2" %in% names(host_breadth_shifts_df_final)) {
   
   # Check correlation for the dashed line logic (significant vs. non-significant)
-  cor_data_host <- host_breadth_shifts_df %>% dplyr::select(breadth_B2, !!sym(chosen_scenario_for_figure)) %>% na.omit()
+  cor_data_host <- host_breadth_shifts_df_final %>% dplyr::select(breadth_B2, !!sym(chosen_scenario_for_figure)) %>% na.omit()
   host_cor_test <- NULL
   if(nrow(cor_data_host) > 2) {
     host_cor_test <- cor.test(cor_data_host$breadth_B2, cor_data_host[[chosen_scenario_for_figure]])
   }
   
-  plot_a_host <- ggplot(host_breadth_shifts_df, aes(x = .data[[chosen_scenario_for_figure]], y = breadth_B2)) +
+  plot_a_host <- ggplot(host_breadth_shifts_df_final, aes(x = .data[[chosen_scenario_for_figure]], y = breadth_B2)) + # Use _final
     geom_point(alpha = 0.8, color = "dodgerblue3") +
     geom_smooth(method = "lm", 
                 linetype = if (!is.null(host_cor_test) && host_cor_test$p.value < 0.05) "solid" else "dashed", 
-                se = TRUE, color = "black") + # Show SE, solid if p < 0.05
+                se = TRUE, color = "black") + 
     labs(
-      # title = "Host Anemone",
+      # title = "Host Anemones", # Title can be part of the combined plot title
       x = paste("Mean Suitability Shift (", gsub("shift_", "SSP", chosen_scenario_for_figure), ")"),
       y = "Environmental Breadth (Levin's B2)"
     ) +
@@ -2484,25 +2934,37 @@ if (!is.null(host_breadth_shifts_df) && chosen_scenario_for_figure %in% names(ho
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
   cat("Host plot generated for", chosen_scenario_for_figure, "\n")
-  if(!is.null(host_cor_test)) print(host_cor_test)
+  if(!is.null(host_cor_test)) print(host_cor_test) # This will print the correlation test from the PREVIOUS chunk
   
 } else {
-  cat("Skipping host breadth vs. shift plot: data for", chosen_scenario_for_figure, "or breadth_B2 missing.\n")
+  cat("Skipping host breadth vs. shift plot: `host_breadth_shifts_df_final` is NULL, or data for", chosen_scenario_for_figure, "or breadth_B2 missing.\n")
 }
 
 # --- Anemonefish (Env-Only) Plot ---
-if (!is.null(fish_breadth_shifts_df) && chosen_scenario_for_figure %in% names(fish_breadth_shifts_df) && "breadth_B2" %in% names(fish_breadth_shifts_df)) {
+# Use the _final dataframe name here
+# Also, this plot in your original setup was for ALL anemonefish (env-only),
+# not split by specialization. If you want to maintain that, use fish_breadth_shifts_df_final
+# but filter it for env-only model types if that distinction was ever made in that df.
+# However, fish_breadth_shifts_df_final in your updated chunk already contains specialization_type.
+# For a plot analogous to the ant paper's Figure 5 (which didn't split by specialization for this specific plot type),
+# you'd plot all anemonefish together here.
+# If you wanted to show generalist vs specialist here side-by-side FOR THIS SCENARIO, that would be a different plot.
+# Let's assume this is for all anemonefish combined for direct comparison with hosts.
+
+if (!is.null(fish_breadth_shifts_df_final) && chosen_scenario_for_figure %in% names(fish_breadth_shifts_df_final) && "breadth_B2" %in% names(fish_breadth_shifts_df_final)) {
   
-  cor_data_fish <- fish_breadth_shifts_df %>% dplyr::select(breadth_B2, !!sym(chosen_scenario_for_figure)) %>% na.omit()
-  fish_cor_test <- NULL
-  if(nrow(cor_data_fish) > 2) {
-    fish_cor_test <- cor.test(cor_data_fish$breadth_B2, cor_data_fish[[chosen_scenario_for_figure]])
+  # If you want to show ALL fish regardless of specialization for this particular plot panel:
+  cor_data_fish_all <- fish_breadth_shifts_df_final %>% # Use the df that has all fish
+    dplyr::select(breadth_B2, !!sym(chosen_scenario_for_figure)) %>% na.omit()
+  fish_cor_test_all <- NULL
+  if(nrow(cor_data_fish_all) > 2) {
+    fish_cor_test_all <- cor.test(cor_data_fish_all$breadth_B2, cor_data_fish_all[[chosen_scenario_for_figure]])
   }
 
-  plot_b_fish <- ggplot(fish_breadth_shifts_df, aes(x = .data[[chosen_scenario_for_figure]], y = breadth_B2)) +
+  plot_b_fish <- ggplot(fish_breadth_shifts_df_final, aes(x = .data[[chosen_scenario_for_figure]], y = breadth_B2)) + # Use _final
     geom_point(alpha = 0.8, color = "firebrick3") +
     geom_smooth(method = "lm", 
-                linetype = if (!is.null(fish_cor_test) && fish_cor_test$p.value < 0.05) "solid" else "dashed", 
+                linetype = if (!is.null(fish_cor_test_all) && fish_cor_test_all$p.value < 0.05) "solid" else "dashed", 
                 se = TRUE, color = "black") +
     labs(
       # title = "Anemonefish",
@@ -2512,17 +2974,28 @@ if (!is.null(fish_breadth_shifts_df) && chosen_scenario_for_figure %in% names(fi
     theme_bw(base_size = 11) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
     
-  cat("Anemonefish plot generated for", chosen_scenario_for_figure, "\n")
-  if(!is.null(fish_cor_test)) print(fish_cor_test)
+  cat("Anemonefish (all) plot generated for", chosen_scenario_for_figure, "\n")
+  if(!is.null(fish_cor_test_all)) print(fish_cor_test_all) # Prints the correlation for ALL fish
   
 } else {
-  cat("Skipping anemonefish breadth vs. shift plot: data for", chosen_scenario_for_figure, "or breadth_B2 missing.\n")
+  cat("Skipping anemonefish breadth vs. shift plot: `fish_breadth_shifts_df_final` is NULL, or data for", chosen_scenario_for_figure, "or breadth_B2 missing.\n")
 }
 
 # --- Combine Plots ---
 if (!is.null(plot_a_host) && !is.null(plot_b_fish)) {
-  combined_breadth_plot <- cowplot::plot_grid(plot_a_host, plot_b_fish, ncol = 2, labels = "AUTO")
-  print(combined_breadth_plot)
+  # Add a main title for the combined plot
+  combined_title <- paste("Figure: Niche Breadth vs. Suitability Shift for", gsub("shift_", "SSP", chosen_scenario_for_figure))
+  
+  combined_breadth_plot <- cowplot::plot_grid(plot_a_host + labs(title="Host Anemones"), 
+                                              plot_b_fish + labs(title="Anemonefish"), 
+                                              ncol = 2, labels = "AUTO")
+  
+  # Add a super title to the combined plot
+  final_plot_with_title <- cowplot::ggdraw() +
+    cowplot::draw_plot(combined_breadth_plot) +
+    cowplot::draw_label(combined_title, fontface = 'bold', x = 0.5, y = 0.97, hjust = 0.5)
+    
+  print(final_plot_with_title)
   cat("Combined breadth vs. suitability shift plot generated.\n")
 } else {
   cat("Could not generate combined breadth plot as one or both individual plots are missing.\n")
