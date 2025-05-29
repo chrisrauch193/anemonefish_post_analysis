@@ -35,6 +35,19 @@ if (!exists("config")) stop("FATAL: 'config' list not found after sourcing confi
 # Helper function for constructing prediction filenames (already in your sdm_modeling_helpers.R)
 # Make sure this helper is sourced or defined if not running the full pipeline before this
 source(file.path(config$helpers_dir, "sdm_modeling_helpers.R")) # If needed
+
+
+scenario_label_converter <- c(
+  "current"     = "Current",
+  "ssp119_2050" = "SSP1-1.9 (2050)",
+  "ssp119_2100" = "SSP1-1.9 (2100)",
+  "ssp245_2050" = "SSP2-4.5 (2050)", # Example, add if you have it
+  "ssp245_2100" = "SSP2-4.5 (2100)", # Example, add if you have it
+  "ssp370_2050" = "SSP3-7.0 (2050)", # Example, add if you have it
+  "ssp370_2100" = "SSP3-7.0 (2100)", # Example, add if you have it
+  "ssp585_2050" = "SSP5-8.5 (2050)",
+  "ssp585_2100" = "SSP5-8.5 (2100)"
+)
 ```
 
 ```{r load-and-process-rasters}
@@ -499,7 +512,7 @@ if (!is.null(df_fish_comparison) && nrow(df_fish_comparison) > 0 && "AUC_test_CV
     scale_fill_manual(
       values = c("env_only" = "grey70", "biotic_only" = "skyblue", "combined_host_env" = "salmon"),
       name = "Model Type",
-      labels = c("Environmental Only", "Biotic (Host) Only", "Combined (Host+Env)")
+      labels = c("PCA Only", "Host Only", "PCA + Host")
     ) +
     theme_bw(base_size = 12) +
     theme(
@@ -529,7 +542,7 @@ if (!is.null(df_fish_comparison) && nrow(df_fish_comparison) > 0 && "AUC_test_CV
     scale_fill_manual(
       values = c("env_only" = "grey70", "biotic_only" = "skyblue", "combined_host_env" = "salmon"),
       name = "Model Type:",
-      labels = c("Environmental Only", "Biotic (Host) Only", "Combined (Host+Env)")
+      labels = c("PCA Only", "Host Only", "PCA + Host")
     ) +
     theme_bw(base_size = 11) +
     theme(
@@ -687,7 +700,7 @@ if (!is.null(df_fish_comparison) && nrow(df_fish_comparison) > 0 && "AUC_test_CV
       scale_fill_manual(
         values = c("env_only" = "grey70", "biotic_only" = "skyblue", "combined_host_env" = "salmon"),
         name = "Model Type:",
-        labels = c("Environmental Only", "Biotic (Host) Only", "Combined (Host+Env)")
+        labels = c("PCA Only", "Host Only", "PCA + Host")
       ) +
       theme_bw(base_size = 11) +
       theme(
@@ -738,17 +751,17 @@ if (config$use_pca_predictors) {
   })
   
   if (!is.null(env_pca_current)) {
-    names(env_pca_current) <- paste0("PC", 1:terra::nlyr(env_pca_current)) # Ensure standard names
+    names(env_pca_current) <- paste0("Current Environmental PC", 1:terra::nlyr(env_pca_current)) # Ensure standard names
     cat("Loaded current environmental PCA rasters. Layers:", paste(names(env_pca_current), collapse=", "), "\n")
     
     # Crop if configured (should match how other current rasters were handled)
     if (config$apply_indo_pacific_crop) {
       ip_extent <- terra::ext(config$indo_pacific_bbox)
       env_pca_current_cropped <- terra::crop(env_pca_current, ip_extent)
-      plot(env_pca_current_cropped, main = "Current Environmental PCA (Cropped)")
+      plot(env_pca_current_cropped)
     } else {
       env_pca_current_cropped <- env_pca_current # Use uncropped if not configured
-      plot(env_pca_current_cropped, main = "Current Environmental PCA (Uncropped)")
+      plot(env_pca_current_cropped)
     }
   } else {
     cat("Error: Could not load current environmental PCA rasters.\n")
@@ -869,6 +882,22 @@ if (length(fish_richness_future_list) > 0 && "ssp585_2100" %in% names(fish_richn
 }
 
 cat("\n--- Future species prediction loading and processing finished. ---\n")
+
+# Final Plots Comparison
+# plot(host_richness_future_list[["current"]], main = "Host Richness - Current")
+plot(host_richness_future_list[["ssp119_2050"]], main = "Host Richness - SSP1-1.9 (2050)")
+plot(host_richness_future_list[["ssp119_2100"]], main = "Host Richness - SSP1-1.9 (2050)")
+plot(host_richness_future_list[["ssp585_2050"]], main = "Host Richness - SSP5-8.5 (2050)")
+plot(host_richness_future_list[["ssp585_2100"]], main = "Host Richness - SSP5-8.5 (2100)")
+
+# plot(fish_richness_list[["current"]], main = "Anemonefish Richness - Current")
+plot(fish_richness_future_list[["ssp119_2050"]], main = "Anemonefish Richness - SSP1-1.9 (2050)")
+plot(fish_richness_future_list[["ssp119_2100"]], main = "Anemonefish Richness - SSP1-1.9 (2100)")
+plot(fish_richness_future_list[["ssp585_2050"]], main = "Anemonefish Richness - SSP5-8.5 (2050)")
+plot(fish_richness_future_list[["ssp585_2100"]], main = "Anemonefish Richness - SSP5-8.5 (2100)")
+
+
+cat("\n--- Future species prediction loading and processing finished. ---\n")
 ```
 
 ## Future Environmental Predictors (PCA)
@@ -909,7 +938,7 @@ if (config$use_pca_predictors) {
     })
     
     if (!is.null(env_pca_future_scenario)) {
-      names(env_pca_future_scenario) <- paste0("PC", 1:terra::nlyr(env_pca_future_scenario)) # Ensure standard names
+      names(env_pca_future_scenario) <- paste0("Future Environmental PC", 1:terra::nlyr(env_pca_future_scenario), " - ", scenario_label_converter[scenario_name]) # Ensure standard names
       
       if (config$apply_indo_pacific_crop) {
         ip_extent <- terra::ext(config$indo_pacific_bbox)
@@ -918,20 +947,21 @@ if (config$use_pca_predictors) {
         env_pca_future_list[[scenario_name]] <- env_pca_future_scenario
       }
       cat("    Loaded and processed PCA for", scenario_name, ". Layers:", paste(names(env_pca_future_list[[scenario_name]]), collapse=", "), "\n")
-      plot(env_pca_future_list[[scenario_name]], main = paste("Future Env PCA -", scenario_name))
+      plot(env_pca_future_list[[scenario_name]])
     }
   }
   
-  # Example: Plot one of the future PCA stacks
-  if (length(env_pca_future_list) > 0 && "ssp119_2050" %in% names(env_pca_future_list)) {
-    plot(env_pca_future_list[["ssp119_2050"]], main = "Future Env PCA - SSP1-1.9 (2050) - Cropped")
-  }
+  # # Example: Plot one of the future PCA stacks
+  # if (length(env_pca_future_list) > 0 && "ssp119_2050" %in% names(env_pca_future_list)) {
+  #   plot(env_pca_future_list[["ssp119_2050"]], main = "Future Env PCA - SSP1-1.9 (2050) - Cropped")
+  # }
   
 } else {
   cat("--- PCA predictors not used. Skipping loading of future PCA rasters. ---\n")
   cat("    You might need to load your VIF-selected future environmental rasters here if needed for specific analyses.\n")
   env_pca_future_list <- NULL # Ensure this object exists as NULL
 }
+
 
 # The following objects are now available for subsequent analyses:
 # - env_pca_current_cropped: SpatRaster of current PCA env predictors
@@ -944,7 +974,7 @@ if (config$use_pca_predictors) {
 
 This section examines the projected changes in the principal environmental gradients (PCA components) between the current conditions and future climate scenarios. This helps understand how the fundamental environmental space is predicted to change.
 
-```{r plot-environmental-pca-shifts}
+```{r}
 #| label: plot-environmental-pca-shifts
 #| fig-width: 12
 #| fig-height: 10 
@@ -963,6 +993,10 @@ if (!config$use_pca_predictors) {
     current_pca_terra <- if(inherits(env_pca_current_cropped, "SpatRaster")) env_pca_current_cropped else terra::rast(env_pca_current_cropped)
 
     for (scenario_name in names(env_pca_future_list)) {
+      if (scenario_name == "current") {
+        next
+      }
+      
       cat("  Processing shifts for scenario:", scenario_name, "\n")
       future_pca_stack <- env_pca_future_list[[scenario_name]]
       
@@ -988,10 +1022,10 @@ if (!config$use_pca_predictors) {
         # terra::`-.SpatRaster` works element-wise if names match or by layer order if names don't.
         # Better to ensure consistent naming (done above)
         env_shift_scenario <- future_pca_subset - current_pca_subset 
-        names(env_shift_scenario) <- paste0("Shift_PC", 1:config$n_pca_components)
+        names(env_shift_scenario) <- paste0("Environmental PC", 1:config$n_pca_components, " Shifts (Future - Current): ", scenario_label_converter[scenario_name])
         
         cat("    Calculated PCA shifts for scenario:", scenario_name, "\n")
-        plot(env_shift_scenario, main = paste("Environmental PCA Shifts (Future - Current):", scenario_name), nc = 2)
+        plot(env_shift_scenario, nc = 2)
         
       } else {
         cat("  Warning: Layer mismatch or insufficient layers for PCA shift calculation in scenario", scenario_name, "\n")
@@ -1489,8 +1523,8 @@ if (is.null(host_richness_sum_cropped) || is.null(fish_richness_sum_cropped)) {
   # --- Combined Plot (Optional, if both groups have data) ---
   if (exists("df_host_change_long") && exists("df_fish_change_long") && 
       nrow(df_host_change_long) > 0 && nrow(df_fish_change_long) > 0) {
-    df_host_change_long$guild <- "Host_Anemones"
-    df_fish_change_long$guild <- "Anemonefish_EnvOnly"
+    df_host_change_long$guild <- "Host Anemone"
+    df_fish_change_long$guild <- "Anemonefish"
     df_all_richness_change <- bind_rows(df_host_change_long, df_fish_change_long)
     
     plot_richness_boxplot <- ggplot(df_all_richness_change, aes(x = guild, y = richness, fill = scenario)) +
@@ -1515,37 +1549,45 @@ if (is.null(host_richness_sum_cropped) || is.null(fish_richness_sum_cropped)) {
   
   # --- Maps of Richness Loss/Gain for a specific future scenario (e.g., worst-case SSP5-8.5 2100) ---
   # Choose one future scenario for difference maps
-  diff_scenario_host <- "ssp585_2100" # Example
-  diff_scenario_fish <- "ssp585_2100" # Example
-  
-  if (diff_scenario_host %in% names(host_richness_future_list) && !is.null(host_richness_future_list[[diff_scenario_host]])) {
-    host_richness_loss <- host_richness_future_list[[diff_scenario_host]] - host_richness_sum_cropped
-    names(host_richness_loss) <- paste0("HostRichnessChange_", diff_scenario_host)
-    plot(host_richness_loss, main = paste("Host Anemone Richness Change:", diff_scenario_host, "vs Current"))
-    
-    # ggplot version
-    df_host_loss = as.data.frame(host_richness_loss, xy=TRUE)
-    plot_host_loss_map <- ggplot(df_host_loss) +
-      geom_raster(aes(y=y, x=x, fill=.data[[names(host_richness_loss)]])) + # Use .data pronoun
-      scale_fill_gradient2(low = "red", mid = "white", high = "darkgreen", midpoint = 0, name="Richness Change") +
-      labs(title = paste("Host Anemone Richness Change:", diff_scenario_host, "vs Current"), x="Longitude", y="Latitude") +
-      theme_bw() + theme(panel.background = element_rect(fill = "aliceblue"))
-    print(plot_host_loss_map)
-  }
-  
-  if (diff_scenario_fish %in% names(fish_richness_future_list) && !is.null(fish_richness_future_list[[diff_scenario_fish]])) {
-    fish_richness_loss <- fish_richness_future_list[[diff_scenario_fish]] - fish_richness_sum_cropped
-    names(fish_richness_loss) <- paste0("FishRichnessChange_", diff_scenario_fish)
-    plot(fish_richness_loss, main = paste("Anemonefish (Env-Only) Richness Change:", diff_scenario_fish, "vs Current"))
-    
-    df_fish_loss = as.data.frame(fish_richness_loss, xy=TRUE)
-    plot_fish_loss_map <- ggplot(df_fish_loss) +
-      geom_raster(aes(y=y, x=x, fill=.data[[names(fish_richness_loss)]])) +
-      scale_fill_gradient2(low = "red", mid = "white", high = "darkgreen", midpoint = 0, name="Richness Change") +
-      labs(title = paste("Anemonefish (Env-Only) Richness Change:", diff_scenario_fish, "vs Current"), x="Longitude", y="Latitude") +
-      theme_bw() + theme(panel.background = element_rect(fill = "aliceblue"))
-    print(plot_fish_loss_map)
-  }
+  # diff_scenario_host <- "ssp585_2100" # Example
+  # diff_scenario_fish <- "ssp585_2100" # Example
+  # for (scenario_name in future_scenarios_to_load) {
+  #   if (scenario_name == current) {
+  #     next
+  #   }
+  #   
+  #   diff_scenario_host <- scenario_name
+  #   diff_scenario_fish <- scenario_name
+  # 
+  #   if (diff_scenario_host %in% names(host_richness_future_list) && !is.null(host_richness_future_list[[diff_scenario_host]])) {
+  #     host_richness_loss <- host_richness_future_list[[diff_scenario_host]] - host_richness_sum_cropped
+  #     names(host_richness_loss) <- paste0("HostRichnessChange_", diff_scenario_host)
+  #     plot(host_richness_loss, main = paste("Host Anemone Richness Change:", scenario_label_converter[diff_scenario_host], "vs Current"))
+  #     
+  #     # ggplot version
+  #     df_host_loss = as.data.frame(host_richness_loss, xy=TRUE)
+  #     plot_host_loss_map <- ggplot(df_host_loss) +
+  #       geom_raster(aes(y=y, x=x, fill=.data[[names(host_richness_loss)]])) + # Use .data pronoun
+  #       scale_fill_gradient2(low = "red", mid = "white", high = "darkgreen", midpoint = 0, name="Richness Change") +
+  #       labs(title = paste("Host Anemone Richness Change:", scenario_label_converter[diff_scenario_host], "vs Current"), x="Longitude", y="Latitude") +
+  #       theme_bw() + theme(panel.background = element_rect(fill = "aliceblue"))
+  #     print(plot_host_loss_map)
+  #   }
+  #   
+  #   if (diff_scenario_fish %in% names(fish_richness_future_list) && !is.null(fish_richness_future_list[[diff_scenario_fish]])) {
+  #     fish_richness_loss <- fish_richness_future_list[[diff_scenario_fish]] - fish_richness_sum_cropped
+  #     names(fish_richness_loss) <- paste0("FishRichnessChange_", diff_scenario_fish)
+  #     plot(fish_richness_loss, main = paste("Anemonefish Richness Change:", scenario_label_converter[diff_scenario_fish], "vs Current"))
+  #     
+  #     df_fish_loss = as.data.frame(fish_richness_loss, xy=TRUE)
+  #     plot_fish_loss_map <- ggplot(df_fish_loss) +
+  #       geom_raster(aes(y=y, x=x, fill=.data[[names(fish_richness_loss)]])) +
+  #       scale_fill_gradient2(low = "red", mid = "white", high = "darkgreen", midpoint = 0, name="Richness Change") +
+  #       labs(title = paste("Anemonefish Richness Change:", scenario_label_converter[diff_scenario_fish], "vs Current"), x="Longitude", y="Latitude") +
+  #       theme_bw() + theme(panel.background = element_rect(fill = "aliceblue"))
+  #     print(plot_fish_loss_map)
+  #   }
+  # }
 }
 ```
 
@@ -2115,7 +2157,7 @@ if (terra::nlyr(host_pred_stack_cropped) > 0) {
     species_raster_host <- host_pred_stack_cropped[[i]]
     sp_name_host <- names(species_raster_host)
     cat("  Calculating breadth for host:", sp_name_host, "\n")
-    plot(species_raster_host, main = paste("Suitability - Host:", sp_name_host)) # Optional plot
+    plot(species_raster_host, main = paste("Suitability - Host:", gsub("_", " ", gsub("_", " ",sp_name_host)))) # Optional plot
     
     # raster.breadth expects a SpatRaster, which species_raster_host should be
     breadth_metrics_host <- tryCatch({
@@ -2153,7 +2195,7 @@ if (terra::nlyr(fish_pred_stack_cropped) > 0) {
     species_raster_fish <- fish_pred_stack_cropped[[i]]
     sp_name_fish <- names(species_raster_fish)
     cat("  Calculating breadth for anemonefish:", sp_name_fish, "\n")
-    plot(species_raster_fish, main = paste("Suitability - Fish (Env-Only):", sp_name_fish)) # Optional plot
+    plot(species_raster_fish, main = paste("Suitability - Anemonefish:", gsub(" ", "_", sp_name_fish))) # Optional plot
 
     breadth_metrics_fish <- tryCatch({
       ENMTools::raster.breadth(species_raster_fish)
@@ -2196,7 +2238,7 @@ if (nrow(host_niche_breadth_df) > 1 && nrow(fish_niche_breadth_df) > 1) {
     
     cat("\nStandard Deviation of Levin's B2:\n")
     cat("  Hosts:", sd(valid_hosts_b2, na.rm = TRUE), "\n")
-    cat("  Anemonefish (Env-Only):", sd(valid_fish_b2, na.rm = TRUE), "\n")
+    cat("  Anemonefish:", sd(valid_fish_b2, na.rm = TRUE), "\n")
     
   } else {
     cat("Levin's B2 column not found in one or both breadth data frames.\n")
@@ -2349,13 +2391,13 @@ all_breadth_shifts_long_df <- NULL
 if (!is.null(host_breadth_shifts_df) && nrow(host_breadth_shifts_df) > 0) {
   host_plot_df <- host_breadth_shifts_df %>% 
     pivot_longer(cols = starts_with("shift_"), names_to = "scenario_shift_code", values_to = "suitability_shift") %>%
-    mutate(guild = "Host_Anemones")
+    mutate(guild = "Host Anemone")
   all_breadth_shifts_long_df <- bind_rows(all_breadth_shifts_long_df, host_plot_df)
 }
 if (!is.null(fish_breadth_shifts_df) && nrow(fish_breadth_shifts_df) > 0) {
   fish_plot_df <- fish_breadth_shifts_df %>%
     pivot_longer(cols = starts_with("shift_"), names_to = "scenario_shift_code", values_to = "suitability_shift") %>%
-    mutate(guild = "Anemonefish_EnvOnly")
+    mutate(guild = "Anemonefish")
   all_breadth_shifts_long_df <- bind_rows(all_breadth_shifts_long_df, fish_plot_df)
 }
 
@@ -2431,7 +2473,7 @@ if (!is.null(host_breadth_shifts_df) && chosen_scenario_for_figure %in% names(ho
                 linetype = if (!is.null(host_cor_test) && host_cor_test$p.value < 0.05) "solid" else "dashed", 
                 se = TRUE, color = "black") + # Show SE, solid if p < 0.05
     labs(
-      # title = "Host Anemones",
+      # title = "Host Anemone",
       x = paste("Mean Suitability Shift (", gsub("shift_", "SSP", chosen_scenario_for_figure), ")"),
       y = "Environmental Breadth (Levin's B2)"
     ) +
@@ -2460,7 +2502,7 @@ if (!is.null(fish_breadth_shifts_df) && chosen_scenario_for_figure %in% names(fi
                 linetype = if (!is.null(fish_cor_test) && fish_cor_test$p.value < 0.05) "solid" else "dashed", 
                 se = TRUE, color = "black") +
     labs(
-      # title = "Anemonefish (Env-Only)",
+      # title = "Anemonefish",
       x = paste("Mean Suitability Shift (", gsub("shift_", "SSP", chosen_scenario_for_figure), ")"),
       y = "Environmental Breadth (Levin's B2)"
     ) +
@@ -2675,7 +2717,7 @@ if (!is.null(host_vi_data) && !is.null(fish_vi_data) && nrow(host_vi_data) > 0 &
       x = "Predictor Variable",
       y = "Permutation Importance (%)"
     ) +
-    scale_fill_manual(values = c("Host_Anemones" = "coral", "Anemonefish_EnvOnly" = "steelblue"), name = "Guild") +
+    scale_fill_manual(values = c("Host Anemone" = "coral", "Anemonefish" = "steelblue"), name = "Guild") +
     theme_bw(base_size = 12) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "top")
   
@@ -2690,8 +2732,8 @@ if (!is.null(host_vi_data) && !is.null(fish_vi_data) && nrow(host_vi_data) > 0 &
     data_for_ttest <- combined_vi_data %>% filter(Variable == var_name)
     
     if (nrow(data_for_ttest %>% distinct(guild)) == 2 && 
-        nrow(data_for_ttest %>% filter(guild == "Host_Anemones") %>% na.omit()) > 1 &&
-        nrow(data_for_ttest %>% filter(guild == "Anemonefish_EnvOnly") %>% na.omit()) > 1) {
+        nrow(data_for_ttest %>% filter(guild == "Host Anemone") %>% na.omit()) > 1 &&
+        nrow(data_for_ttest %>% filter(guild == "Anemonefish") %>% na.omit()) > 1) {
       
       ttest_vi_result <- tryCatch({
         t.test(Permutation_Importance ~ guild, data = data_for_ttest)
