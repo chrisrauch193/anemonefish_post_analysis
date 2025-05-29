@@ -1251,6 +1251,9 @@ for (scenario_name_fut in future_scenarios_to_load) {
 } # End loop through future scenarios
 
 cat("\n--- Individual species suitability shift calculations finished. ---\n")
+
+suitability_shifts_list
+
 # The `suitability_shifts_list` object is now populated.
 # Example access: suitability_shifts_list[["hosts_ssp119_2050"]]
 # It will contain data frames with rownames = species_name_sanitized and a column "mean" for the shift.
