@@ -150,7 +150,7 @@ Intermediate Models Dir: /Users/chrisrauch/anemonefish_post_analysis/data/sdm_ou
 Intermediate Results Dir: /Users/chrisrauch/anemonefish_post_analysis/data/sdm_output_intermediate/results 
 Target Prediction Base: /Users/chrisrauch/anemonefish_post_analysis/data/output/predictions 
 Target Results Base: /Users/chrisrauch/anemonefish_post_analysis/predictions 
-Logging to file: /Users/chrisrauch/anemonefish_post_analysis/data/sdm_output_intermediate/logs_and_analysis/sdm_run_20250604_231756.log (Level: INFO Append: TRUE )
+Logging to file: /Users/chrisrauch/anemonefish_post_analysis/data/sdm_output_intermediate/logs_and_analysis/sdm_run_20250605_001306.log (Level: INFO Append: TRUE )
 Logging to console: TRUE (Level: INFO )
 Parallel execution: TRUE with 7 cores.
 Using predictors: PCA </code></pre>
@@ -5346,157 +5346,160 @@ sample estimates:
 <span id="cb214-19"><a href="#cb214-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">cat</span>(<span class="st">"  Found host VI files in nested directory:"</span>, host_vi_dir_nested, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb214-20"><a href="#cb214-20" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb214-21"><a href="#cb214-21" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb214-22"><a href="#cb214-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb214-23"><a href="#cb214-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb214-24"><a href="#cb214-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb214-25"><a href="#cb214-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(host_vi_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb214-26"><a href="#cb214-26" aria-hidden="true" tabindex="-1"></a>  host_vi_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_df</span>(host_vi_files, </span>
-<span id="cb214-27"><a href="#cb214-27" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb214-28"><a href="#cb214-28" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">mutate</span>(<span class="at">filename =</span> <span class="fu">basename</span>(.x))) <span class="sc">%&gt;%</span></span>
-<span id="cb214-29"><a href="#cb214-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb214-30"><a href="#cb214-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">species_sanitized =</span> <span class="fu">str_remove</span>(<span class="fu">str_remove</span>(filename, <span class="st">"^VI_"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>),</span>
-<span id="cb214-31"><a href="#cb214-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">guild =</span> <span class="st">"Host Anemones"</span> <span class="co"># Consistent naming with scale_fill_manual later</span></span>
-<span id="cb214-32"><a href="#cb214-32" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb214-33"><a href="#cb214-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Permutation_Importance =</span> Importance) </span>
-<span id="cb214-34"><a href="#cb214-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb214-35"><a href="#cb214-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Loaded VI data for"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(host_vi_data<span class="sc">$</span>species_sanitized)), <span class="st">"host species.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb214-36"><a href="#cb214-36" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb214-37"><a href="#cb214-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Warning: No Variable Importance CSV files found for host anemones. Checked:"</span>, host_vi_dir_base, <span class="st">"and potential alternatives.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb214-38"><a href="#cb214-38" aria-hidden="true" tabindex="-1"></a>  host_vi_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb214-39"><a href="#cb214-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb214-22"><a href="#cb214-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Loaded VI data for 24 host species.</code></pre>
+<pre><code>  Found host VI files in alternative directory: /Users/chrisrauch/anemonefish_post_analysis/data/output/anemone_pca </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb216"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Load Anemonefish (Environmental-Only Models) Variable Importance ---</span></span>
-<span id="cb216-2"><a href="#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Loading Anemonefish (Env-Only) Variable Importance ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb216"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(host_vi_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb216-2"><a href="#cb216-2" aria-hidden="true" tabindex="-1"></a>  host_vi_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_df</span>(host_vi_files, </span>
+<span id="cb216-3"><a href="#cb216-3" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb216-4"><a href="#cb216-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">mutate</span>(<span class="at">filename =</span> <span class="fu">basename</span>(.x))) <span class="sc">%&gt;%</span></span>
+<span id="cb216-5"><a href="#cb216-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb216-6"><a href="#cb216-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">species_sanitized =</span> <span class="fu">str_remove</span>(<span class="fu">str_remove</span>(filename, <span class="st">"^VI_"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>),</span>
+<span id="cb216-7"><a href="#cb216-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">guild =</span> <span class="st">"Host Anemones"</span> <span class="co"># Consistent naming with scale_fill_manual later</span></span>
+<span id="cb216-8"><a href="#cb216-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb216-9"><a href="#cb216-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Permutation_Importance =</span> Importance) </span>
+<span id="cb216-10"><a href="#cb216-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb216-11"><a href="#cb216-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Loaded VI data for"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(host_vi_data<span class="sc">$</span>species_sanitized)), <span class="st">"host species.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb216-12"><a href="#cb216-12" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb216-13"><a href="#cb216-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Warning: No Variable Importance CSV files found for host anemones. Checked:"</span>, host_vi_dir_base, <span class="st">"and potential alternatives.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb216-14"><a href="#cb216-14" aria-hidden="true" tabindex="-1"></a>  host_vi_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb216-15"><a href="#cb216-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loaded VI data for 9 host species.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Load Anemonefish (Environmental-Only Models) Variable Importance ---</span></span>
+<span id="cb218-2"><a href="#cb218-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- Loading Anemonefish (Env-Only) Variable Importance ---</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 --- Loading Anemonefish (Env-Only) Variable Importance ---</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a>fish_vi_subdir_name <span class="ot">&lt;-</span> config<span class="sc">$</span>model_output_subdir_map[[env_model_predictor_suffix]] <span class="sc">%||%</span> </span>
-<span id="cb218-2"><a href="#cb218-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">ifelse</span>(config<span class="sc">$</span>use_pca_predictors, <span class="st">"anemonefish_pca"</span>, <span class="st">"anemonefish_vif"</span>)</span>
-<span id="cb218-3"><a href="#cb218-3" aria-hidden="true" tabindex="-1"></a>fish_vi_dir_base <span class="ot">&lt;-</span> <span class="fu">file.path</span>(config<span class="sc">$</span>target_vi_base, fish_vi_subdir_name)</span>
-<span id="cb218-4"><a href="#cb218-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb218-5"><a href="#cb218-5" aria-hidden="true" tabindex="-1"></a>fish_vi_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_base, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb218-6"><a href="#cb218-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(fish_vi_files) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> env_model_predictor_suffix <span class="sc">==</span> <span class="st">"_pca"</span>) { </span>
-<span id="cb218-7"><a href="#cb218-7" aria-hidden="true" tabindex="-1"></a>    fish_vi_dir_alt <span class="ot">&lt;-</span> <span class="fu">file.path</span>(config<span class="sc">$</span>target_vi_base, <span class="st">"anemonefish_pca"</span>)</span>
-<span id="cb218-8"><a href="#cb218-8" aria-hidden="true" tabindex="-1"></a>    fish_vi_files_alt_check <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_alt, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb218-9"><a href="#cb218-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">length</span>(fish_vi_files_alt_check) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb218-10"><a href="#cb218-10" aria-hidden="true" tabindex="-1"></a>        fish_vi_files <span class="ot">&lt;-</span> fish_vi_files_alt_check</span>
-<span id="cb218-11"><a href="#cb218-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"  Found fish VI files in alternative directory:"</span>, fish_vi_dir_alt, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb218-12"><a href="#cb218-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb218-13"><a href="#cb218-13" aria-hidden="true" tabindex="-1"></a>        fish_vi_dir_nested <span class="ot">&lt;-</span> <span class="fu">file.path</span>(fish_vi_dir_base, <span class="st">"anemonefish_pca"</span>)</span>
-<span id="cb218-14"><a href="#cb218-14" aria-hidden="true" tabindex="-1"></a>        fish_vi_files_nested_check <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_nested, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb218-15"><a href="#cb218-15" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span>(<span class="fu">length</span>(fish_vi_files_nested_check) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb218-16"><a href="#cb218-16" aria-hidden="true" tabindex="-1"></a>            fish_vi_files <span class="ot">&lt;-</span> fish_vi_files_nested_check</span>
-<span id="cb218-17"><a href="#cb218-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">cat</span>(<span class="st">"  Found fish VI files in nested directory:"</span>, fish_vi_dir_nested, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb218-18"><a href="#cb218-18" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb218-19"><a href="#cb218-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb218-20"><a href="#cb218-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb218-21"><a href="#cb218-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb218-22"><a href="#cb218-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(fish_vi_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb218-23"><a href="#cb218-23" aria-hidden="true" tabindex="-1"></a>  fish_vi_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_df</span>(fish_vi_files, </span>
-<span id="cb218-24"><a href="#cb218-24" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb218-25"><a href="#cb218-25" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">mutate</span>(<span class="at">filename =</span> <span class="fu">basename</span>(.x))) <span class="sc">%&gt;%</span></span>
-<span id="cb218-26"><a href="#cb218-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb218-27"><a href="#cb218-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">species_sanitized =</span> <span class="fu">str_remove</span>(<span class="fu">str_remove</span>(filename, <span class="st">"^VI_"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>),</span>
-<span id="cb218-28"><a href="#cb218-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">guild =</span> <span class="st">"Anemonefish (Env-Only)"</span> <span class="co"># Consistent naming</span></span>
-<span id="cb218-29"><a href="#cb218-29" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb218-30"><a href="#cb218-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Permutation_Importance =</span> Importance) </span>
-<span id="cb218-31"><a href="#cb218-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Loaded VI data for"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(fish_vi_data<span class="sc">$</span>species_sanitized)), <span class="st">"anemonefish (env-only) species.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb218-32"><a href="#cb218-32" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb218-33"><a href="#cb218-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Warning: No Variable Importance CSV files found for anemonefish (env-only). Checked:"</span>, fish_vi_dir_base, <span class="st">"and potential alternatives.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb218-34"><a href="#cb218-34" aria-hidden="true" tabindex="-1"></a>  fish_vi_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb218-35"><a href="#cb218-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a>fish_vi_subdir_name <span class="ot">&lt;-</span> config<span class="sc">$</span>model_output_subdir_map[[env_model_predictor_suffix]] <span class="sc">%||%</span> </span>
+<span id="cb220-2"><a href="#cb220-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">ifelse</span>(config<span class="sc">$</span>use_pca_predictors, <span class="st">"anemonefish_pca"</span>, <span class="st">"anemonefish_vif"</span>)</span>
+<span id="cb220-3"><a href="#cb220-3" aria-hidden="true" tabindex="-1"></a>fish_vi_dir_base <span class="ot">&lt;-</span> <span class="fu">file.path</span>(config<span class="sc">$</span>target_vi_base, fish_vi_subdir_name)</span>
+<span id="cb220-4"><a href="#cb220-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb220-5"><a href="#cb220-5" aria-hidden="true" tabindex="-1"></a>fish_vi_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_base, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb220-6"><a href="#cb220-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(fish_vi_files) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> env_model_predictor_suffix <span class="sc">==</span> <span class="st">"_pca"</span>) { </span>
+<span id="cb220-7"><a href="#cb220-7" aria-hidden="true" tabindex="-1"></a>    fish_vi_dir_alt <span class="ot">&lt;-</span> <span class="fu">file.path</span>(config<span class="sc">$</span>target_vi_base, <span class="st">"anemonefish_pca"</span>)</span>
+<span id="cb220-8"><a href="#cb220-8" aria-hidden="true" tabindex="-1"></a>    fish_vi_files_alt_check <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_alt, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb220-9"><a href="#cb220-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">length</span>(fish_vi_files_alt_check) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb220-10"><a href="#cb220-10" aria-hidden="true" tabindex="-1"></a>        fish_vi_files <span class="ot">&lt;-</span> fish_vi_files_alt_check</span>
+<span id="cb220-11"><a href="#cb220-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"  Found fish VI files in alternative directory:"</span>, fish_vi_dir_alt, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb220-12"><a href="#cb220-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb220-13"><a href="#cb220-13" aria-hidden="true" tabindex="-1"></a>        fish_vi_dir_nested <span class="ot">&lt;-</span> <span class="fu">file.path</span>(fish_vi_dir_base, <span class="st">"anemonefish_pca"</span>)</span>
+<span id="cb220-14"><a href="#cb220-14" aria-hidden="true" tabindex="-1"></a>        fish_vi_files_nested_check <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> fish_vi_dir_nested, <span class="at">pattern =</span> <span class="st">"^VI_.*</span><span class="sc">\\</span><span class="st">.csv$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb220-15"><a href="#cb220-15" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span>(<span class="fu">length</span>(fish_vi_files_nested_check) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb220-16"><a href="#cb220-16" aria-hidden="true" tabindex="-1"></a>            fish_vi_files <span class="ot">&lt;-</span> fish_vi_files_nested_check</span>
+<span id="cb220-17"><a href="#cb220-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">cat</span>(<span class="st">"  Found fish VI files in nested directory:"</span>, fish_vi_dir_nested, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb220-18"><a href="#cb220-18" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb220-19"><a href="#cb220-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb220-20"><a href="#cb220-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Loaded VI data for 24 anemonefish (env-only) species.</code></pre>
+<pre><code>  Found fish VI files in alternative directory: /Users/chrisrauch/anemonefish_post_analysis/data/output/anemonefish_pca </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Combine and Compare VI ---</span></span>
-<span id="cb220-2"><a href="#cb220-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(host_vi_data) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(fish_vi_data) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(host_vi_data) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(fish_vi_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb220-3"><a href="#cb220-3" aria-hidden="true" tabindex="-1"></a>  combined_vi_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(host_vi_data, fish_vi_data) <span class="sc">%&gt;%</span></span>
-<span id="cb220-4"><a href="#cb220-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Permutation_Importance)) </span>
-<span id="cb220-5"><a href="#cb220-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-6"><a href="#cb220-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="st">"Variable"</span> <span class="sc">%in%</span> <span class="fu">names</span>(combined_vi_data)) {</span>
-<span id="cb220-7"><a href="#cb220-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"The 'Variable' column is missing from the loaded VI data. Check the output of SDMtune::varImp or your VI calculation script."</span>)</span>
-<span id="cb220-8"><a href="#cb220-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb220-9"><a href="#cb220-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-10"><a href="#cb220-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Combined VI data for comparison:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-11"><a href="#cb220-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">head</span>(combined_vi_data))</span>
-<span id="cb220-12"><a href="#cb220-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb220-13"><a href="#cb220-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure guild is a factor for consistent plotting order and legend</span></span>
-<span id="cb220-14"><a href="#cb220-14" aria-hidden="true" tabindex="-1"></a>  combined_vi_data<span class="sc">$</span>guild <span class="ot">&lt;-</span> <span class="fu">factor</span>(combined_vi_data<span class="sc">$</span>guild, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Anemonefish (Env-Only)"</span>, <span class="st">"Host Anemones"</span>))</span>
-<span id="cb220-15"><a href="#cb220-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb220-16"><a href="#cb220-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb220-17"><a href="#cb220-17" aria-hidden="true" tabindex="-1"></a>  plot_vi_comparison <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(combined_vi_data, <span class="fu">aes</span>(<span class="at">x =</span> Variable, <span class="at">y =</span> Permutation_Importance, <span class="at">fill =</span> guild)) <span class="sc">+</span></span>
-<span id="cb220-18"><a href="#cb220-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">preserve =</span> <span class="st">"single"</span>)) <span class="sc">+</span></span>
-<span id="cb220-19"><a href="#cb220-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb220-20"><a href="#cb220-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Variable Importance Comparison between Guilds"</span>,</span>
-<span id="cb220-21"><a href="#cb220-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Predictor Variable (PCA Component)"</span>, <span class="co"># Clarified x-axis</span></span>
-<span id="cb220-22"><a href="#cb220-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Permutation Importance (%)"</span></span>
-<span id="cb220-23"><a href="#cb220-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb220-24"><a href="#cb220-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Host Anemones"</span> <span class="ot">=</span> <span class="st">"coral"</span>, <span class="st">"Anemonefish (Env-Only)"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>), <span class="at">name =</span> <span class="st">"Guild"</span>) <span class="sc">+</span> <span class="co"># Matched factor levels</span></span>
-<span id="cb220-25"><a href="#cb220-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb220-26"><a href="#cb220-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), <span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
-<span id="cb220-27"><a href="#cb220-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-28"><a href="#cb220-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Print plot to RMarkdown output</span></span>
-<span id="cb220-29"><a href="#cb220-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(plot_vi_comparison)</span>
-<span id="cb220-30"><a href="#cb220-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb220-31"><a href="#cb220-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- ADD THIS SECTION TO SAVE plot_vi_comparison ---</span></span>
-<span id="cb220-32"><a href="#cb220-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure figure_output_dir is defined (should be from setup chunk)</span></span>
-<span id="cb220-33"><a href="#cb220-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">exists</span>(<span class="st">"figure_output_dir"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">dir.exists</span>(figure_output_dir)) {</span>
-<span id="cb220-34"><a href="#cb220-34" aria-hidden="true" tabindex="-1"></a>    vi_comparison_plot_filename <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_output_dir, <span class="st">"variable_importance_comparison_guilds.png"</span>)</span>
-<span id="cb220-35"><a href="#cb220-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggsave</span>(<span class="at">filename =</span> vi_comparison_plot_filename, </span>
-<span id="cb220-36"><a href="#cb220-36" aria-hidden="true" tabindex="-1"></a>           <span class="at">plot =</span> plot_vi_comparison, </span>
-<span id="cb220-37"><a href="#cb220-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">dpi =</span> <span class="dv">300</span>) <span class="co"># Adjust dimensions/dpi as needed</span></span>
-<span id="cb220-38"><a href="#cb220-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Saved variable importance comparison plot to:"</span>, vi_comparison_plot_filename, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-39"><a href="#cb220-39" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb220-40"><a href="#cb220-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Warning: 'figure_output_dir' not defined or does not exist. Variable importance plot not saved to file.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-41"><a href="#cb220-41" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb220-42"><a href="#cb220-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- </span><span class="re">END</span><span class="co"> OF ADDED SECTION ---</span></span>
-<span id="cb220-43"><a href="#cb220-43" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-44"><a href="#cb220-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform t-tests for each predictor variable</span></span>
-<span id="cb220-45"><a href="#cb220-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- T-tests for difference in Variable Importance between Guilds ---</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-46"><a href="#cb220-46" aria-hidden="true" tabindex="-1"></a>  predictor_vars_to_test <span class="ot">&lt;-</span> <span class="fu">unique</span>(combined_vi_data<span class="sc">$</span>Variable)</span>
-<span id="cb220-47"><a href="#cb220-47" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-48"><a href="#cb220-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (var_name <span class="cf">in</span> predictor_vars_to_test) {</span>
-<span id="cb220-49"><a href="#cb220-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"  Testing variable:"</span>, var_name, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-50"><a href="#cb220-50" aria-hidden="true" tabindex="-1"></a>    data_for_ttest <span class="ot">&lt;-</span> combined_vi_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Variable <span class="sc">==</span> var_name)</span>
-<span id="cb220-51"><a href="#cb220-51" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb220-52"><a href="#cb220-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if both guild levels are present with more than 1 observation each for the current variable</span></span>
-<span id="cb220-53"><a href="#cb220-53" aria-hidden="true" tabindex="-1"></a>    guild_counts_for_var <span class="ot">&lt;-</span> data_for_ttest <span class="sc">%&gt;%</span> </span>
-<span id="cb220-54"><a href="#cb220-54" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">group_by</span>(guild) <span class="sc">%&gt;%</span> </span>
-<span id="cb220-55"><a href="#cb220-55" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">summarise</span>(<span class="at">n_obs =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb220-56"><a href="#cb220-56" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">filter</span>(n_obs <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb220-57"><a href="#cb220-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb220-58"><a href="#cb220-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(guild_counts_for_var) <span class="sc">==</span> <span class="dv">2</span>) { <span class="co"># Needs exactly two groups with &gt;1 obs each</span></span>
-<span id="cb220-59"><a href="#cb220-59" aria-hidden="true" tabindex="-1"></a>      ttest_vi_result <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
-<span id="cb220-60"><a href="#cb220-60" aria-hidden="true" tabindex="-1"></a>        <span class="fu">t.test</span>(Permutation_Importance <span class="sc">~</span> guild, <span class="at">data =</span> data_for_ttest)</span>
-<span id="cb220-61"><a href="#cb220-61" aria-hidden="true" tabindex="-1"></a>      }, <span class="at">error =</span> <span class="cf">function</span>(e){</span>
-<span id="cb220-62"><a href="#cb220-62" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"    Error in t-test for"</span>, var_name, <span class="st">":"</span>, e<span class="sc">$</span>message, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>); <span class="cn">NULL</span></span>
-<span id="cb220-63"><a href="#cb220-63" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb220-64"><a href="#cb220-64" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(ttest_vi_result)) <span class="fu">print</span>(ttest_vi_result)</span>
-<span id="cb220-65"><a href="#cb220-65" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb220-66"><a href="#cb220-66" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb220-67"><a href="#cb220-67" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"    Skipping t-test for"</span>, var_name, <span class="st">"- insufficient data or only one guild present for this variable after filtering.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-68"><a href="#cb220-68" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(data_for_ttest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(guild) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Count=</span><span class="fu">n</span>())) <span class="co"># Show counts for debugging</span></span>
-<span id="cb220-69"><a href="#cb220-69" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb220-70"><a href="#cb220-70" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb220-71"><a href="#cb220-71" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb220-72"><a href="#cb220-72" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb220-73"><a href="#cb220-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Not enough variable importance data to compare between guilds.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb220-74"><a href="#cb220-74" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb222"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb222-1"><a href="#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(fish_vi_files) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb222-2"><a href="#cb222-2" aria-hidden="true" tabindex="-1"></a>  fish_vi_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map_df</span>(fish_vi_files, </span>
+<span id="cb222-3"><a href="#cb222-3" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb222-4"><a href="#cb222-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">mutate</span>(<span class="at">filename =</span> <span class="fu">basename</span>(.x))) <span class="sc">%&gt;%</span></span>
+<span id="cb222-5"><a href="#cb222-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb222-6"><a href="#cb222-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">species_sanitized =</span> <span class="fu">str_remove</span>(<span class="fu">str_remove</span>(filename, <span class="st">"^VI_"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>),</span>
+<span id="cb222-7"><a href="#cb222-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">guild =</span> <span class="st">"Anemonefish (Env-Only)"</span> <span class="co"># Consistent naming</span></span>
+<span id="cb222-8"><a href="#cb222-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb222-9"><a href="#cb222-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Permutation_Importance =</span> Importance) </span>
+<span id="cb222-10"><a href="#cb222-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Loaded VI data for"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(fish_vi_data<span class="sc">$</span>species_sanitized)), <span class="st">"anemonefish (env-only) species.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb222-11"><a href="#cb222-11" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb222-12"><a href="#cb222-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Warning: No Variable Importance CSV files found for anemonefish (env-only). Checked:"</span>, fish_vi_dir_base, <span class="st">"and potential alternatives.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb222-13"><a href="#cb222-13" aria-hidden="true" tabindex="-1"></a>  fish_vi_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb222-14"><a href="#cb222-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loaded VI data for 9 anemonefish (env-only) species.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb224"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb224-1"><a href="#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Combine and Compare VI ---</span></span>
+<span id="cb224-2"><a href="#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(host_vi_data) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(fish_vi_data) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(host_vi_data) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(fish_vi_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb224-3"><a href="#cb224-3" aria-hidden="true" tabindex="-1"></a>  combined_vi_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(host_vi_data, fish_vi_data) <span class="sc">%&gt;%</span></span>
+<span id="cb224-4"><a href="#cb224-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Permutation_Importance)) </span>
+<span id="cb224-5"><a href="#cb224-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-6"><a href="#cb224-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="st">"Variable"</span> <span class="sc">%in%</span> <span class="fu">names</span>(combined_vi_data)) {</span>
+<span id="cb224-7"><a href="#cb224-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"The 'Variable' column is missing from the loaded VI data. Check the output of SDMtune::varImp or your VI calculation script."</span>)</span>
+<span id="cb224-8"><a href="#cb224-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb224-9"><a href="#cb224-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-10"><a href="#cb224-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Combined VI data for comparison:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-11"><a href="#cb224-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">head</span>(combined_vi_data))</span>
+<span id="cb224-12"><a href="#cb224-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-13"><a href="#cb224-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure guild is a factor for consistent plotting order and legend</span></span>
+<span id="cb224-14"><a href="#cb224-14" aria-hidden="true" tabindex="-1"></a>  combined_vi_data<span class="sc">$</span>guild <span class="ot">&lt;-</span> <span class="fu">factor</span>(combined_vi_data<span class="sc">$</span>guild, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Anemonefish (Env-Only)"</span>, <span class="st">"Host Anemones"</span>))</span>
+<span id="cb224-15"><a href="#cb224-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-16"><a href="#cb224-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-17"><a href="#cb224-17" aria-hidden="true" tabindex="-1"></a>  plot_vi_comparison <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(combined_vi_data, <span class="fu">aes</span>(<span class="at">x =</span> Variable, <span class="at">y =</span> Permutation_Importance, <span class="at">fill =</span> guild)) <span class="sc">+</span></span>
+<span id="cb224-18"><a href="#cb224-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">preserve =</span> <span class="st">"single"</span>)) <span class="sc">+</span></span>
+<span id="cb224-19"><a href="#cb224-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb224-20"><a href="#cb224-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Variable Importance Comparison between Guilds"</span>,</span>
+<span id="cb224-21"><a href="#cb224-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Predictor Variable (PCA Component)"</span>, <span class="co"># Clarified x-axis</span></span>
+<span id="cb224-22"><a href="#cb224-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Permutation Importance (%)"</span></span>
+<span id="cb224-23"><a href="#cb224-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb224-24"><a href="#cb224-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Host Anemones"</span> <span class="ot">=</span> <span class="st">"coral"</span>, <span class="st">"Anemonefish (Env-Only)"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>), <span class="at">name =</span> <span class="st">"Guild"</span>) <span class="sc">+</span> <span class="co"># Matched factor levels</span></span>
+<span id="cb224-25"><a href="#cb224-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb224-26"><a href="#cb224-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), <span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
+<span id="cb224-27"><a href="#cb224-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-28"><a href="#cb224-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Print plot to RMarkdown output</span></span>
+<span id="cb224-29"><a href="#cb224-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(plot_vi_comparison)</span>
+<span id="cb224-30"><a href="#cb224-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-31"><a href="#cb224-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- ADD THIS SECTION TO SAVE plot_vi_comparison ---</span></span>
+<span id="cb224-32"><a href="#cb224-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure figure_output_dir is defined (should be from setup chunk)</span></span>
+<span id="cb224-33"><a href="#cb224-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">exists</span>(<span class="st">"figure_output_dir"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">dir.exists</span>(figure_output_dir)) {</span>
+<span id="cb224-34"><a href="#cb224-34" aria-hidden="true" tabindex="-1"></a>    vi_comparison_plot_filename <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_output_dir, <span class="st">"variable_importance_comparison_guilds.png"</span>)</span>
+<span id="cb224-35"><a href="#cb224-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggsave</span>(<span class="at">filename =</span> vi_comparison_plot_filename, </span>
+<span id="cb224-36"><a href="#cb224-36" aria-hidden="true" tabindex="-1"></a>           <span class="at">plot =</span> plot_vi_comparison, </span>
+<span id="cb224-37"><a href="#cb224-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">dpi =</span> <span class="dv">300</span>) <span class="co"># Adjust dimensions/dpi as needed</span></span>
+<span id="cb224-38"><a href="#cb224-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Saved variable importance comparison plot to:"</span>, vi_comparison_plot_filename, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-39"><a href="#cb224-39" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb224-40"><a href="#cb224-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Warning: 'figure_output_dir' not defined or does not exist. Variable importance plot not saved to file.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-41"><a href="#cb224-41" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb224-42"><a href="#cb224-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- </span><span class="re">END</span><span class="co"> OF ADDED SECTION ---</span></span>
+<span id="cb224-43"><a href="#cb224-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-44"><a href="#cb224-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform t-tests for each predictor variable</span></span>
+<span id="cb224-45"><a href="#cb224-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">--- T-tests for difference in Variable Importance between Guilds ---</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-46"><a href="#cb224-46" aria-hidden="true" tabindex="-1"></a>  predictor_vars_to_test <span class="ot">&lt;-</span> <span class="fu">unique</span>(combined_vi_data<span class="sc">$</span>Variable)</span>
+<span id="cb224-47"><a href="#cb224-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-48"><a href="#cb224-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (var_name <span class="cf">in</span> predictor_vars_to_test) {</span>
+<span id="cb224-49"><a href="#cb224-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"  Testing variable:"</span>, var_name, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-50"><a href="#cb224-50" aria-hidden="true" tabindex="-1"></a>    data_for_ttest <span class="ot">&lt;-</span> combined_vi_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Variable <span class="sc">==</span> var_name)</span>
+<span id="cb224-51"><a href="#cb224-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb224-52"><a href="#cb224-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if both guild levels are present with more than 1 observation each for the current variable</span></span>
+<span id="cb224-53"><a href="#cb224-53" aria-hidden="true" tabindex="-1"></a>    guild_counts_for_var <span class="ot">&lt;-</span> data_for_ttest <span class="sc">%&gt;%</span> </span>
+<span id="cb224-54"><a href="#cb224-54" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">group_by</span>(guild) <span class="sc">%&gt;%</span> </span>
+<span id="cb224-55"><a href="#cb224-55" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">summarise</span>(<span class="at">n_obs =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb224-56"><a href="#cb224-56" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">filter</span>(n_obs <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb224-57"><a href="#cb224-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-58"><a href="#cb224-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(guild_counts_for_var) <span class="sc">==</span> <span class="dv">2</span>) { <span class="co"># Needs exactly two groups with &gt;1 obs each</span></span>
+<span id="cb224-59"><a href="#cb224-59" aria-hidden="true" tabindex="-1"></a>      ttest_vi_result <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb224-60"><a href="#cb224-60" aria-hidden="true" tabindex="-1"></a>        <span class="fu">t.test</span>(Permutation_Importance <span class="sc">~</span> guild, <span class="at">data =</span> data_for_ttest)</span>
+<span id="cb224-61"><a href="#cb224-61" aria-hidden="true" tabindex="-1"></a>      }, <span class="at">error =</span> <span class="cf">function</span>(e){</span>
+<span id="cb224-62"><a href="#cb224-62" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"    Error in t-test for"</span>, var_name, <span class="st">":"</span>, e<span class="sc">$</span>message, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>); <span class="cn">NULL</span></span>
+<span id="cb224-63"><a href="#cb224-63" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb224-64"><a href="#cb224-64" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(ttest_vi_result)) <span class="fu">print</span>(ttest_vi_result)</span>
+<span id="cb224-65"><a href="#cb224-65" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb224-66"><a href="#cb224-66" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb224-67"><a href="#cb224-67" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"    Skipping t-test for"</span>, var_name, <span class="st">"- insufficient data or only one guild present for this variable after filtering.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-68"><a href="#cb224-68" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(data_for_ttest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(guild) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Count=</span><span class="fu">n</span>())) <span class="co"># Show counts for debugging</span></span>
+<span id="cb224-69"><a href="#cb224-69" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb224-70"><a href="#cb224-70" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb224-71"><a href="#cb224-71" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb224-72"><a href="#cb224-72" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb224-73"><a href="#cb224-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Not enough variable importance data to compare between guilds.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb224-74"><a href="#cb224-74" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Combined VI data for comparison:
 # A tibble: 6 × 5
   Variable Permutation_Importance filename               species_sanitized guild
   &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;                  &lt;chr&gt;             &lt;chr&gt;
-1 PC4                        87.9 VI_Amphiprion_allardi… Amphiprion_allar… Host…
-2 PC3                         6.1 VI_Amphiprion_allardi… Amphiprion_allar… Host…
-3 PC1                         4.9 VI_Amphiprion_allardi… Amphiprion_allar… Host…
-4 PC2                         1.1 VI_Amphiprion_allardi… Amphiprion_allar… Host…
-5 PC4                        51.4 VI_Amphiprion_bicinct… Amphiprion_bicin… Host…
-6 PC2                        45.4 VI_Amphiprion_bicinct… Amphiprion_bicin… Host…</code></pre>
+1 PC4                        43.1 VI_Cryptodendrum_adha… Cryptodendrum_ad… Host…
+2 PC2                        29.3 VI_Cryptodendrum_adha… Cryptodendrum_ad… Host…
+3 PC3                        26.1 VI_Cryptodendrum_adha… Cryptodendrum_ad… Host…
+4 PC1                         1.5 VI_Cryptodendrum_adha… Cryptodendrum_ad… Host…
+5 PC2                        41.1 VI_Entacmaea_quadrico… Entacmaea_quadri… Host…
+6 PC4                        37.2 VI_Entacmaea_quadrico… Entacmaea_quadri… Host…</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -5514,52 +5517,52 @@ Combined VI data for comparison:
     Welch Two Sample t-test
 
 data:  Permutation_Importance by guild
-t = 0, df = 46, p-value = 1
+t = -0.24208, df = 9.5674, p-value = 0.8138
 alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
 95 percent confidence interval:
- -10.55044  10.55044
+ -14.36546  11.56546
 sample estimates:
 mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
-                            38.35417                             38.35417 
-
-  Testing variable: PC3 
-
-    Welch Two Sample t-test
-
-data:  Permutation_Importance by guild
-t = 0, df = 46, p-value = 1
-alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
-95 percent confidence interval:
- -7.316944  7.316944
-sample estimates:
-mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
-                            19.99167                             19.99167 
-
-  Testing variable: PC1 
-
-    Welch Two Sample t-test
-
-data:  Permutation_Importance by guild
-t = 0, df = 46, p-value = 1
-alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
-95 percent confidence interval:
- -6.223832  6.223832
-sample estimates:
-mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
-                            9.733333                             9.733333 
+                            34.27778                             35.67778 
 
   Testing variable: PC2 
 
     Welch Two Sample t-test
 
 data:  Permutation_Importance by guild
-t = 0, df = 46, p-value = 1
+t = 1.7121, df = 15.197, p-value = 0.1072
 alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
 95 percent confidence interval:
- -10.3235  10.3235
+ -2.982301 27.471190
 sample estimates:
 mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
-                            31.92917                             31.92917 </code></pre>
+                            39.61111                             27.36667 
+
+  Testing variable: PC3 
+
+    Welch Two Sample t-test
+
+data:  Permutation_Importance by guild
+t = -4.8185, df = 15.236, p-value = 0.0002161
+alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
+95 percent confidence interval:
+ -26.40005 -10.22217
+sample estimates:
+mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
+                            10.74444                             29.05556 
+
+  Testing variable: PC1 
+
+    Welch Two Sample t-test
+
+data:  Permutation_Importance by guild
+t = 1.4956, df = 15.998, p-value = 0.1542
+alternative hypothesis: true difference in means between group Anemonefish (Env-Only) and group Host Anemones is not equal to 0
+95 percent confidence interval:
+ -3.130798 18.130798
+sample estimates:
+mean in group Anemonefish (Env-Only)          mean in group Host Anemones 
+                                15.4                                  7.9 </code></pre>
 </div>
 </div>
 </section>
